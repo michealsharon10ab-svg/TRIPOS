@@ -1,0 +1,5 @@
+/* JavaFX POS Stylesheet */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #1e1e2d;
+}
