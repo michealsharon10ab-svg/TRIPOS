@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TriPOS — Take Payment</title>
+  <meta name="description" content="TriPOS POS Payment Screen — accept cash, card and QR payments." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="payment-root">
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       HEADER
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="payment-header">
+    <div class="payment-header-left">
+      <div class="payment-title">Take payment</div>
+      <div class="payment-customer-sub" id="headerCustomer"></div>
+    </div>
+    <div class="payment-header-total" id="headerTotal">Rs. 0.00</div>
+    <button class="payment-close-btn" id="closeBtn">✕</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       BODY
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="payment-body">
+
+    <!-- ─────────── LEFT — Method Tabs + Input Area ─────────── -->
+    <div class="payment-left-panel">
+
+      <!-- Payment method tabs -->
+      <div class="payment-method-tabs" id="methodTabs"></div>
+
+      <!-- ── CASH PANEL ──────────────────────────────────── -->
+      <div class="payment-input-panel" id="cashPanel">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+            <span class="pmt-field-label">Cash due</span>
+            <span class="pmt-cash-due" id="cashDue">Rs. 0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span class="pmt-field-label">Cash received</span>
+            <span class="pmt-cash-received" id="cashReceived">Rs. 0.00</span>
+          </div>
+        </div>
+
+        <!-- Numpad -->
+        <div class="numpad-grid" id="numpad">
+          <button class="numpad-btn" data-val="1">1</button>
+          <button class="numpad-btn" data-val="2">2</button>
+          <button class="numpad-btn" data-val="3">3</button>
+          <button class="numpad-btn" data-val="4">4</button>
+          <button class="numpad-btn" data-val="5">5</button>
+          <button class="numpad-btn" data-val="6">6</button>
+          <button class="numpad-btn" data-val="7">7</button>
+          <button class="numpad-btn" data-val="8">8</button>
+          <button class="numpad-btn" data-val="9">9</button>
+          <button class="numpad-btn" data-val=".">.</button>
+          <button class="numpad-btn" data-val="0">0</button>
+          <button class="numpad-btn numpad-clear" id="numpadClear">C</button>
+        </div>
+
+        <!-- Quick amounts -->
+        <div>
+          <div class="pmt-field-label" style="margin-bottom:6px;">Quick amounts</div>
+          <div class="quick-amounts" id="quickAmounts"></div>
+        </div>
+
+        <!-- Change due -->
+        <div class="change-due-box" id="changeDueBox">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span class="change-due-label">Change due</span>
+            <span class="change-due-value" id="changeDueVal">Rs. 0.00</span>
+          </div>
+        </div>
+
+        <div style="flex:1;"></div>
+
+        <!-- Add cash payment -->
+        <button class="btn-add-payment" id="addCashBtn">Add cash payment</button>
+      </div>
+
+      <!-- ── CARD PANEL ──────────────────────────────────── -->
+      <div class="payment-input-panel panel-hidden" id="cardPanel">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="pmt-field-label">Amount to charge on card</span>
+          <span class="pmt-cash-due" id="cardAmount">Rs. 0.00</span>
+        </div>
+
+        <div class="terminal-waiting-box">
+          <div class="card-terminal-spinner"></div>
+          <div class="terminal-waiting-title">Waiting for card terminal</div>
+          <div class="terminal-waiting-sub">
+            Ask the customer to tap, insert or swipe on Terminal 2 – EDC
+          </div>
+        </div>
+
+        <div class="card-option-tags">
+          <span class="card-option-tag">Contactless card</span>
+          <span class="card-option-tag">Apple Pay</span>
+          <span class="card-option-tag">Google Pay</span>
+          <span class="card-option-tag">Chip and PIN</span>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-cancel-card" id="cancelCardBtn">Cancel request</button>
+          <button class="btn-manual-card" id="manualCardBtn">Enter card manually</button>
+        </div>
+      </div>
+
+      <!-- ── QR PANEL ────────────────────────────────────── -->
+      <div class="payment-input-panel panel-hidden" id="qrPanel">
+        <div class="qr-placeholder">
+          <div class="qr-placeholder-icon">📱</div>
+          <div class="qr-placeholder-title">LankaQR Payment</div>
+          <div class="qr-placeholder-sub">Display QR code for customer to scan.</div>
+          <div class="pmt-field-label" style="text-align:center;margin-top:8px;">(QR integration pending backend setup)</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ─────────── RIGHT — Payments Added + Summary ─────────── -->
+    <div class="payments-added-panel">
+
+      <!-- Header -->
+      <div class="payments-added-header">
+        <span class="payments-added-title">Payments added</span>
+        <div class="payments-count-badge" id="paymentsCount" style="display:none;">0</div>
+      </div>
+
+      <!-- List -->
+      <div class="payments-list-scroll">
+        <div id="paymentsList">
+          <div class="no-payments-hint" id="noPaymentsHint">
+            No payments yet. Choose a payment method and add a payment.
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="payment-summary-block">
+        <div class="pmt-sum-row">
+          <span class="pmt-sum-label">Total</span>
+          <span class="pmt-sum-value" id="sumTotal">Rs. 0.00</span>
+        </div>
+        <div class="pmt-sum-row">
+          <span class="pmt-sum-label">Paid</span>
+          <span class="pmt-sum-value" id="sumPaid">Rs. 0.00</span>
+        </div>
+        <div class="pmt-remaining-row">
+          <span class="pmt-remaining-label">Remaining balance</span>
+          <span class="pmt-remaining-value" id="sumRemaining">Rs. 0.00</span>
+        </div>
+      </div>
+
+      <!-- Complete sale -->
+      <div class="complete-sale-box">
+        <button class="btn-complete-sale" id="completeSaleBtn" disabled>Complete sale</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Success overlay (injected via JS) -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════════════════
+const saleTotal   = parseFloat(sessionStorage.getItem('tripos_total')) || 6830;
+const saleCart     = JSON.parse(sessionStorage.getItem('tripos_cart') || '[]');
+let payments       = [];   // { method: string, amount: number }
+let cashInput      = '';
+let activeMethod   = 'Cash';
+
+const fmt = v => `Rs. ${v.toLocaleString('en-LK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+const METHODS = ['Cash', 'Card / Tap', 'LankaQR', 'Gift Card'];
+
+// ═══════════════════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════════════════
+document.getElementById('headerTotal').textContent = fmt(saleTotal);
+document.getElementById('headerCustomer').textContent =
+  saleCart.length > 0 ? `${saleCart.length} item(s) in sale` : '';
+
+renderMethodTabs();
+renderCashPanel();
+renderQuickAmounts();
+renderPaymentsSummary();
+
+// ═══════════════════════════════════════════════════════════════════════
+// Method Tabs
+// ═══════════════════════════════════════════════════════════════════════
+function renderMethodTabs() {
+  const container = document.getElementById('methodTabs');
+  container.innerHTML = '';
+  METHODS.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'pmt-tab' + (m === activeMethod ? ' active' : '');
+    btn.textContent = m;
+    btn.addEventListener('click', () => switchMethod(m));
+    container.appendChild(btn);
+  });
+}
+
+function switchMethod(method) {
+  activeMethod = method;
+  renderMethodTabs();
+
+  document.getElementById('cashPanel').classList.toggle('panel-hidden', method !== 'Cash');
+  document.getElementById('cardPanel').classList.toggle('panel-hidden', method !== 'Card / Tap');
+  document.getElementById('qrPanel').classList.toggle('panel-hidden', method !== 'LankaQR' && method !== 'Gift Card');
+
+  if (method === 'Card / Tap') {
+    document.getElementById('cardAmount').textContent = fmt(getRemaining());
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Cash Panel
+// ═══════════════════════════════════════════════════════════════════════
+function renderCashPanel() {
+  const remaining = getRemaining();
+  document.getElementById('cashDue').textContent = fmt(Math.max(0, remaining));
+  document.getElementById('cashReceived').textContent = fmt(parseFloat(cashInput) || 0);
+
+  const received = parseFloat(cashInput) || 0;
+  const change = received - remaining;
+  const changeBox = document.getElementById('changeDueBox');
+  if (change > 0) {
+    changeBox.classList.add('show');
+    document.getElementById('changeDueVal').textContent = fmt(change);
+  } else {
+    changeBox.classList.remove('show');
+  }
+}
+
+// Numpad
+document.getElementById('numpad').addEventListener('click', e => {
+  const btn = e.target.closest('[data-val]');
+  if (!btn) return;
+  const val = btn.dataset.val;
+  if (val === '.' && cashInput.includes('.')) return;
+  // Max 2 decimals
+  if (cashInput.includes('.') && cashInput.split('.')[1].length >= 2) return;
+  cashInput += val;
+  renderCashPanel();
+});
+
+document.getElementById('numpadClear').addEventListener('click', () => {
+  cashInput = '';
+  renderCashPanel();
+});
+
+// Quick amounts
+function renderQuickAmounts() {
+  const remaining = getRemaining();
+  const amounts = [
+    Math.ceil(remaining / 100) * 100,
+    Math.ceil(remaining / 500) * 500,
+    Math.ceil(remaining / 1000) * 1000,
+    remaining,
+  ].filter((v, i, a) => v > 0 && a.indexOf(v) === i);
+
+  const box = document.getElementById('quickAmounts');
+  box.innerHTML = '';
+  amounts.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'quick-btn';
+    btn.textContent = fmt(a);
+    btn.addEventListener('click', () => {
+      cashInput = a.toFixed(2);
+      renderCashPanel();
+    });
+    box.appendChild(btn);
+  });
+}
+
+// Add cash payment
+document.getElementById('addCashBtn').addEventListener('click', () => {
+  const amount = parseFloat(cashInput);
+  if (!amount || amount <= 0) return;
+  const remaining = getRemaining();
+  const applied = Math.min(amount, remaining);
+  if (applied <= 0) return;
+
+  payments.push({ method: 'Cash', amount: applied });
+  cashInput = '';
+  renderCashPanel();
+  renderQuickAmounts();
+  renderPaymentsSummary();
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Card Panel actions
+// ═══════════════════════════════════════════════════════════════════════
+document.getElementById('cancelCardBtn').addEventListener('click', () => {
+  switchMethod('Cash');
+});
+
+document.getElementById('manualCardBtn').addEventListener('click', () => {
+  // Simulate card payment
+  const remaining = getRemaining();
+  if (remaining <= 0) return;
+  payments.push({ method: 'Card', amount: remaining });
+  renderCashPanel();
+  renderQuickAmounts();
+  renderPaymentsSummary();
+  switchMethod('Cash');
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Payments Summary (right panel)
+// ═══════════════════════════════════════════════════════════════════════
+function getRemaining() {
+  const paid = payments.reduce((s, p) => s + p.amount, 0);
+  return Math.max(0, saleTotal - paid);
+}
+
+function renderPaymentsSummary() {
+  const listEl = document.getElementById('paymentsList');
+  const hintEl = document.getElementById('noPaymentsHint');
+  const countEl = document.getElementById('paymentsCount');
+  const paid = payments.reduce((s, p) => s + p.amount, 0);
+  const remaining = Math.max(0, saleTotal - paid);
+
+  // List
+  listEl.innerHTML = '';
+  if (payments.length === 0) {
+    listEl.innerHTML = `<div class="no-payments-hint">No payments yet. Choose a payment method and add a payment.</div>`;
+    countEl.style.display = 'none';
+  } else {
+    countEl.style.display = 'flex';
+    countEl.textContent = payments.length;
+    payments.forEach((p, idx) => {
+      const el = document.createElement('div');
+      el.className = 'payment-entry';
+      el.innerHTML = `
+        <span class="payment-entry-method">${p.method}</span>
+        <span class="payment-entry-amount">${fmt(p.amount)}</span>
+        <button class="payment-entry-remove" data-idx="${idx}">✕</button>
+      `;
+      listEl.appendChild(el);
+    });
+    listEl.querySelectorAll('.payment-entry-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        payments.splice(+btn.dataset.idx, 1);
+        renderCashPanel();
+        renderQuickAmounts();
+        renderPaymentsSummary();
+      });
+    });
+  }
+
+  // Summary
+  document.getElementById('sumTotal').textContent = fmt(saleTotal);
+  document.getElementById('sumPaid').textContent = fmt(paid);
+  document.getElementById('sumRemaining').textContent = fmt(remaining);
+
+  const remEl = document.getElementById('sumRemaining');
+  remEl.classList.toggle('paid', remaining === 0);
+
+  document.getElementById('completeSaleBtn').disabled = remaining > 0;
+}
+
+// Complete sale
+document.getElementById('completeSaleBtn').addEventListener('click', () => {
+  showSuccessOverlay();
+});
+
+function showSuccessOverlay() {
+  const paid = payments.reduce((s, p) => s + p.amount, 0);
+  const overlay = document.createElement('div');
+  overlay.className = 'success-overlay';
+  overlay.innerHTML = `
+    <div class="success-card">
+      <div class="check-icon">✓</div>
+      <div class="s-title">Sale completed!</div>
+      <div class="s-sub">Total ${fmt(saleTotal)} paid via ${payments.map(p => p.method).join(' + ')}</div>
+      <button class="btn-new-sale" id="newSaleBtn">New sale</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#newSaleBtn').addEventListener('click', () => {
+    sessionStorage.clear();
+    window.location.href = 'checkout.html';
+  });
+}
+
+// Close → back to checkout
+document.getElementById('closeBtn').addEventListener('click', () => {
+  window.location.href = 'checkout.html';
+});
+
+// Keyboard: numbers go to numpad
+document.addEventListener('keydown', e => {
+  if (activeMethod !== 'Cash') return;
+  if (e.key >= '0' && e.key <= '9') {
+    if (cashInput.includes('.') && cashInput.split('.')[1].length >= 2) return;
+    cashInput += e.key;
+    renderCashPanel();
+  }
+  if (e.key === '.') {
+    if (!cashInput.includes('.')) { cashInput += '.'; renderCashPanel(); }
+  }
+  if (e.key === 'Backspace') {
+    cashInput = cashInput.slice(0, -1);
+    renderCashPanel();
+  }
+  if (e.key === 'Enter') {
+    document.getElementById('addCashBtn').click();
+  }
+});
+</script>
+
+</body>
+</html>

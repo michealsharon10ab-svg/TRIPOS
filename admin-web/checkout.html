@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TriPOS — Cashier Checkout</title>
+  <meta name="description" content="TriPOS POS Sale Screen — browse products and build a sale." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="checkout-root">
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       TOP HEADER BAR
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="header-bar">
+    <div class="header-brand">
+      <span class="header-brand-name">TriPOS</span>
+    </div>
+    <div class="header-meta-list">
+      <span class="header-meta-bold">Colombo City Hotel</span>
+      <span class="header-meta-dot">·</span>
+      <span class="header-meta">Gift shop</span>
+      <span class="header-meta-dot">·</span>
+      <span class="header-meta">Terminal 2</span>
+      <span class="header-meta-dot">·</span>
+      <span class="header-meta">Kaush Siva – Cashier</span>
+      <span class="header-meta-dot">·</span>
+      <span class="header-meta" style="color:#52525B;">Shift open · 6:00 AM</span>
+    </div>
+    <div class="header-right">
+      <span class="badge-online">Online</span>
+      <span class="badge-parked" id="parkedBadge">Parked bills: 0</span>
+      <button class="header-menu-btn">⋯</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       MAIN BODY
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="main-body">
+
+    <!-- ─────────── LEFT — Product Catalogue (~65%) ─────────── -->
+    <div class="catalogue-panel">
+
+      <!-- Search -->
+      <div class="search-bar-row">
+        <input type="text" id="searchField" class="catalogue-search" placeholder="Scan barcode or search items" />
+        <button class="clear-search-btn" id="clearSearchBtn">✕</button>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="category-tabs-row" id="categoryTabs"></div>
+
+      <!-- Product grid -->
+      <div class="product-scroll">
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="catalogue-footer">
+        <span class="footer-status" id="catalogueStatus"></span>
+        <div style="flex:1;"></div>
+        <span class="shortcut-hint">F2 Search</span>
+        <span class="shortcut-hint">F4 Customer</span>
+        <span class="shortcut-hint">Esc Clear</span>
+      </div>
+    </div>
+
+    <!-- ─────────── RIGHT — Current Sale (~35%) ─────────── -->
+    <div class="sale-panel">
+
+      <!-- Sale header -->
+      <div class="sale-header">
+        <div class="sale-header-left">
+          <div class="sale-heading">Current sale</div>
+          <div class="sale-subheading" id="invoiceRef">New sale</div>
+        </div>
+        <button class="sale-menu-btn">⋯</button>
+      </div>
+
+      <!-- Customer -->
+      <div class="customer-bar">
+        <div class="customer-avatar" id="custAvatar">?</div>
+        <div class="customer-info">
+          <div class="customer-name" id="custName">No customer</div>
+          <div class="customer-sub" id="custSub">Add customer to apply loyalty</div>
+        </div>
+      </div>
+
+      <!-- Items list -->
+      <div class="sale-items-scroll" id="saleItemsScroll">
+        <div class="sale-items-container" id="saleItemsContainer"></div>
+        <div class="empty-cart" id="emptyCart">
+          <div class="cart-icon">🛒</div>
+          <div class="cart-text">No items in sale</div>
+          <div class="cart-sub">Click a product to add it</div>
+        </div>
+      </div>
+
+      <!-- Totals -->
+      <div class="totals-block">
+        <div class="totals-row">
+          <span class="totals-label">Subtotal</span>
+          <span class="totals-value" id="subtotalVal">Rs. 0.00</span>
+        </div>
+        <div class="totals-row">
+          <span class="totals-label green">Discount</span>
+          <span class="totals-value green" id="discountVal">–</span>
+        </div>
+        <div class="totals-row">
+          <span class="totals-label dim">VAT 18% (sample – included)</span>
+          <span class="totals-value dim" id="vatVal">Rs. 0.00</span>
+        </div>
+        <hr class="totals-divider" />
+        <div class="totals-row">
+          <span class="totals-total-label">Total</span>
+          <span class="totals-total-value" id="totalVal">Rs. 0.00</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="sale-actions-row">
+        <button class="action-btn" id="btnDiscount">Discount</button>
+        <button class="action-btn" id="btnNote">Note</button>
+        <button class="action-btn" id="btnPark">Park</button>
+        <button class="action-btn danger" id="btnVoid">Void</button>
+      </div>
+
+      <!-- Pay button -->
+      <div class="pay-button-box">
+        <button class="btn-pay" id="payBtn" disabled>
+          <span>Pay Rs. 0.00</span>
+          <span class="shortcut" style="background:none;color:inherit;padding:0;">· F8</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// MOCK PRODUCT CATALOGUE  —  same data as ProductCatalogueService.java
+// ═══════════════════════════════════════════════════════════════════════
+const CATALOGUE = [
+  // Tea & Coffee
+  { id:'T001', barcode:'5014308046001', name:'Ceylon Black Tea 200g',       cat:'Tea & Coffee',  price:1250, unit:'pack',   emoji:'🍵' },
+  { id:'T002', barcode:'5014308046002', name:'Ceylon Green Tea 100g',       cat:'Tea & Coffee',  price:1100, unit:'pack',   emoji:'🍃' },
+  { id:'T003', barcode:'5014308046003', name:'Cinnamon Tea 20 Bags',        cat:'Tea & Coffee',  price:850,  unit:'box',    emoji:'☕' },
+  { id:'T004', barcode:'5014308046004', name:'Lemongrass Herbal Tea',       cat:'Tea & Coffee',  price:720,  unit:'box',    emoji:'🌿' },
+  { id:'T005', barcode:'5014308046005', name:'Pure Ceylon OP1 Loose Leaf',  cat:'Tea & Coffee',  price:1650, unit:'pack',   emoji:'🫖' },
+  // Groceries
+  { id:'G001', barcode:'5014308047001', name:'Coconut Oil 1L',              cat:'Groceries',     price:880,  unit:'bottle', emoji:'🥥' },
+  { id:'G002', barcode:'5014308047002', name:'Kithul Jaggery 500g',         cat:'Groceries',     price:660,  unit:'pack',   emoji:'🍯' },
+  { id:'G003', barcode:'5014308047003', name:'Cinnamon Sticks 50g',         cat:'Groceries',     price:850,  unit:'pack',   emoji:'✨' },
+  { id:'G004', barcode:'5014308047004', name:'Dried Maldive Fish 100g',     cat:'Groceries',     price:480,  unit:'pack',   emoji:'🐟' },
+  { id:'G005', barcode:'5014308047005', name:'King Coconut Water 330ml',    cat:'Groceries',     price:355,  unit:'each',   emoji:'🧃' },
+  { id:'G006', barcode:'5014308047006', name:'Ayurvedic Balm 50g',          cat:'Groceries',     price:720,  unit:'jar',    emoji:'🧴' },
+  { id:'G007', barcode:'5014308047007', name:'Pol Sambol Paste 250g',       cat:'Groceries',     price:390,  unit:'jar',    emoji:'🌶️' },
+  // Clothing
+  { id:'C001', barcode:'5014308048001', name:'Batik T-shirt (M)',           cat:'Clothing',      price:2450, unit:'each',   emoji:'👕' },
+  { id:'C002', barcode:'5014308048002', name:'Batik Sarong',                cat:'Clothing',      price:1800, unit:'each',   emoji:'🩱' },
+  { id:'C003', barcode:'5014308048003', name:'Handloom Saree',              cat:'Clothing',      price:3000, unit:'each',   emoji:'👗' },
+  { id:'C004', barcode:'5014308048004', name:'Linen Beach Shirt',           cat:'Clothing',      price:2800, unit:'each',   emoji:'🏖️' },
+  // Electronics
+  { id:'E001', barcode:'5014308049001', name:'Bluetooth Speaker (Mini)',    cat:'Electronics',   price:14900,unit:'each',   emoji:'🔊' },
+  { id:'E002', barcode:'5014308049002', name:'USB-C Charging Hub',          cat:'Electronics',   price:4200, unit:'each',   emoji:'🔌' },
+  { id:'E003', barcode:'5014308049003', name:'Wireless Earbuds',            cat:'Electronics',   price:8900, unit:'each',   emoji:'🎧' },
+  // Gifts
+  { id:'F001', barcode:'5014308050001', name:'Spice Gift Box (Assorted)',   cat:'Gifts',         price:4500, unit:'box',    emoji:'🎁' },
+  { id:'F002', barcode:'5014308050002', name:'Wooden Elephant Souvenir',    cat:'Gifts',         price:3100, unit:'each',   emoji:'🐘' },
+  { id:'F003', barcode:'5014308050003', name:'Mask Fridge Magnet',          cat:'Gifts',         price:495,  unit:'each',   emoji:'🎭' },
+  { id:'F004', barcode:'5014308050004', name:'Colombo City Map Print',      cat:'Gifts',         price:990,  unit:'each',   emoji:'🗺️' },
+  { id:'F005', barcode:'5014308050005', name:'Coconut Shell Bowl',          cat:'Gifts',         price:1500, unit:'each',   emoji:'🥣' },
+  { id:'F006', barcode:'5014308050006', name:'Roorala Lace Coasters (4pk)', cat:'Gifts',         price:1200, unit:'set',    emoji:'🧶' },
+];
+
+const categories = ['All', ...new Set(CATALOGUE.map(p => p.cat))];
+
+// ── State ──
+let cart = [];  // { product, qty }
+let activeCategory = 'All';
+
+// ── Currency formatter ──
+const fmt = v => `Rs. ${v.toLocaleString('en-LK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+// ═══════════════════════════════════════════════════════════════════════
+// Render functions
+// ═══════════════════════════════════════════════════════════════════════
+function renderCategoryTabs() {
+  const container = document.getElementById('categoryTabs');
+  container.innerHTML = '';
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      activeCategory = cat;
+      renderCategoryTabs();
+      renderProducts();
+    });
+    container.appendChild(btn);
+  });
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  const q = document.getElementById('searchField').value.trim().toLowerCase();
+  let filtered = CATALOGUE;
+
+  if (activeCategory !== 'All') {
+    filtered = filtered.filter(p => p.cat === activeCategory);
+  }
+  if (q) {
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.barcode.includes(q) ||
+      p.cat.toLowerCase().includes(q)
+    );
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="emoji-icon">${p.emoji}</div>
+      <div class="pname">${p.name}</div>
+      <div class="pprice">${fmt(p.price)}</div>
+      <div class="punit">per ${p.unit}</div>
+      <div class="barcode-tag">${p.barcode}</div>
+    `;
+    card.addEventListener('click', e => {
+      // Ripple
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+      const rect = card.getBoundingClientRect();
+      const sz = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = sz + 'px';
+      ripple.style.left = (e.clientX - rect.left - sz / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - sz / 2) + 'px';
+      card.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 500);
+
+      addToCart(p);
+    });
+    grid.appendChild(card);
+  });
+
+  document.getElementById('catalogueStatus').textContent =
+    `${filtered.length} product${filtered.length !== 1 ? 's' : ''} shown`;
+
+  // Show/hide clear button
+  document.getElementById('clearSearchBtn').classList.toggle('show', q.length > 0);
+}
+
+function addToCart(product) {
+  const existing = cart.find(c => c.product.id === product.id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ product, qty: 1 });
+  }
+  renderCart();
+}
+
+function renderCart() {
+  const container = document.getElementById('saleItemsContainer');
+  const empty = document.getElementById('emptyCart');
+
+  if (cart.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'flex';
+    updateTotals(0);
+    return;
+  }
+
+  empty.style.display = 'none';
+  container.innerHTML = '';
+
+  cart.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'sale-item';
+    const lineTotal = item.product.price * item.qty;
+    row.innerHTML = `
+      <div class="sale-item-info">
+        <div class="sale-item-name">${item.product.name}</div>
+        <div class="sale-item-meta">${fmt(item.product.price)} × ${item.qty}</div>
+      </div>
+      <div class="sale-item-qty">
+        <button class="qty-btn" data-action="dec" data-idx="${idx}">−</button>
+        <span class="qty-val">${item.qty}</span>
+        <button class="qty-btn" data-action="inc" data-idx="${idx}">+</button>
+      </div>
+      <div class="sale-item-price">${fmt(lineTotal)}</div>
+      <button class="sale-item-remove" data-idx="${idx}">✕</button>
+    `;
+    container.appendChild(row);
+  });
+
+  // Wire qty/remove buttons
+  container.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.idx;
+      if (btn.dataset.action === 'inc') cart[i].qty++;
+      else { cart[i].qty--; if (cart[i].qty <= 0) cart.splice(i, 1); }
+      renderCart();
+    });
+  });
+  container.querySelectorAll('.sale-item-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cart.splice(+btn.dataset.idx, 1);
+      renderCart();
+    });
+  });
+
+  const subtotal = cart.reduce((s, c) => s + c.product.price * c.qty, 0);
+  updateTotals(subtotal);
+}
+
+function updateTotals(subtotal) {
+  const vat = subtotal * 0.18 / 1.18;  // VAT included
+  document.getElementById('subtotalVal').textContent = fmt(subtotal);
+  document.getElementById('vatVal').textContent = fmt(vat);
+  document.getElementById('totalVal').textContent = fmt(subtotal);
+
+  const payBtn = document.getElementById('payBtn');
+  payBtn.querySelector('span:first-child').textContent = `Pay ${fmt(subtotal)}`;
+  payBtn.disabled = subtotal === 0;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Events
+// ═══════════════════════════════════════════════════════════════════════
+document.getElementById('searchField').addEventListener('input', renderProducts);
+document.getElementById('clearSearchBtn').addEventListener('click', () => {
+  document.getElementById('searchField').value = '';
+  renderProducts();
+  document.getElementById('searchField').focus();
+});
+
+document.getElementById('payBtn').addEventListener('click', () => {
+  if (cart.length === 0) return;
+  // Save cart to sessionStorage so Payment page can read it
+  const subtotal = cart.reduce((s, c) => s + c.product.price * c.qty, 0);
+  sessionStorage.setItem('tripos_cart', JSON.stringify(cart));
+  sessionStorage.setItem('tripos_total', subtotal.toString());
+  window.location.href = 'payment.html';
+});
+
+document.getElementById('btnVoid').addEventListener('click', () => {
+  if (cart.length === 0) return;
+  if (confirm('Void the entire sale? This cannot be undone.')) {
+    cart = [];
+    renderCart();
+  }
+});
+
+document.getElementById('btnDiscount').addEventListener('click', () => {
+  alert('Discount — PROTOTYPE\nDiscount logic connects to the backend pricing engine.');
+});
+document.getElementById('btnNote').addEventListener('click', () => {
+  alert('Sale Note — PROTOTYPE\nNotes are saved to the sale record via the backend.');
+});
+document.getElementById('btnPark').addEventListener('click', () => {
+  if (cart.length === 0) return;
+  alert('Sale Parked — PROTOTYPE\nThis sale would be saved for later retrieval.');
+  cart = [];
+  renderCart();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === 'F2') { e.preventDefault(); document.getElementById('searchField').focus(); }
+  if (e.key === 'F8') { e.preventDefault(); document.getElementById('payBtn').click(); }
+  if (e.key === 'Escape') { document.getElementById('searchField').value = ''; renderProducts(); }
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════════════════
+renderCategoryTabs();
+renderProducts();
+renderCart();
+</script>
+
+</body>
+</html>

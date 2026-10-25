@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<!--
+  PaymentView.fxml  —  TriPOS Payment Screen
+  Reference: Figma B2 Payment (Card/Tap) + B2 Payment (Cash split)
+
+  Layout
+  ════════════════════════════════════════════════════════════
+  ┌──────────────────── HEADER ─────────────────────────────────┐
+  │ Take payment  · Customer name · Total Rs. X.XX   [✕ close] │
+  └─────────────────────────────────────────────────────────────┘
+  ┌─────────── LEFT  65%  ─────────────┐ ┌──── RIGHT  35% ─────┐
+  │ [Cash][Card/Tap][LankaQR][Gift]... │ │ Payments added       │
+  │ ─────────────────────────────────  │ │                      │
+  │  CASH: amount field + numpad       │ │  method   Rs. amt ×  │
+  │         quick amounts + change     │ │  ─────────────────── │
+  │  CARD: terminal waiting anim       │ │  Total  Rs. 6,830    │
+  │         contactless/chip options   │ │  Paid   Rs. X        │
+  │  QR:   placeholder                 │ │  Remaining Rs. X     │
+  │                                    │ │  [Complete sale]     │
+  └────────────────────────────────────┘ └──────────────────────┘
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.tripos.pos.controller.PaymentController"
+            styleClass="payment-root"
+            minWidth="820" minHeight="560">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HEADER
+         ═══════════════════════════════════════════════════════════ -->
+    <top>
+        <HBox styleClass="payment-header" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+
+            <VBox HBox.hgrow="ALWAYS" spacing="2">
+                <Label text="Take payment" styleClass="payment-title"/>
+                <Label fx:id="headerCustomerLabel" text="" styleClass="payment-customer-sub"/>
+            </VBox>
+
+            <Label fx:id="headerTotalLabel" text="Rs. 0.00" styleClass="payment-header-total"/>
+
+            <Button text="✕" styleClass="payment-close-btn" onAction="#onClose"/>
+        </HBox>
+    </top>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BODY
+         ═══════════════════════════════════════════════════════════ -->
+    <center>
+        <HBox styleClass="payment-body">
+
+            <!-- ─────────────────────────────────────────────────────
+                 LEFT — method tabs + input area
+                 ───────────────────────────────────────────────────── -->
+            <VBox HBox.hgrow="ALWAYS" styleClass="payment-left-panel" spacing="0">
+
+                <!-- Payment method tabs (built programmatically) -->
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER"
+                            styleClass="payment-tabs-scroll">
+                    <HBox fx:id="paymentMethodTabsBox" styleClass="payment-method-tabs" spacing="4">
+                        <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                    </HBox>
+                </ScrollPane>
+
+                <!-- ── CASH PANEL ─────────────────────────────────── -->
+                <VBox fx:id="cashPanel" styleClass="payment-input-panel" spacing="14"
+                      VBox.vgrow="ALWAYS">
+                    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                    <!-- Amount label + field -->
+                    <VBox spacing="6">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Cash due" styleClass="pmt-field-label" HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="cashDueLabel" text="Rs. 0.00" styleClass="pmt-cash-due"/>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="Cash received" styleClass="pmt-field-label" HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="cashReceivedDisplay" text="Rs. 0.00" styleClass="pmt-cash-received"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Numpad -->
+                    <GridPane fx:id="numpadGrid" styleClass="numpad-grid"
+                              hgap="8" vgap="8" alignment="CENTER">
+                        <!-- Row 0 -->
+                        <Button text="1" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Button text="2" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Button text="3" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                        <!-- Row 1 -->
+                        <Button text="4" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Button text="5" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Button text="6" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                        <!-- Row 2 -->
+                        <Button text="7" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Button text="8" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Button text="9" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                        <!-- Row 3 -->
+                        <Button text="." styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Button text="0" styleClass="numpad-btn" onAction="#onNumpad"
+                                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Button text="C" styleClass="numpad-btn numpad-clear" onAction="#onNumpadClear"
+                                GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                    </GridPane>
+
+                    <!-- Quick amount buttons -->
+                    <VBox spacing="6">
+                        <Label text="Quick amounts" styleClass="pmt-field-label"/>
+                        <HBox fx:id="quickAmountsBox" spacing="8" alignment="CENTER_LEFT"/>
+                    </VBox>
+
+                    <!-- Change due -->
+                    <VBox fx:id="changeDueBox" styleClass="change-due-box" spacing="4"
+                          visible="false" managed="false">
+                        <padding><Insets top="10" right="14" bottom="10" left="14"/></padding>
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Change due" styleClass="change-due-label" HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="changeDueLabel" text="Rs. 0.00" styleClass="change-due-value"/>
+                        </HBox>
+                    </VBox>
+
+                    <Region VBox.vgrow="ALWAYS"/>
+
+                    <!-- Add cash payment button -->
+                    <Button fx:id="addCashBtn" text="Add cash payment"
+                            maxWidth="Infinity" styleClass="btn-add-payment"
+                            onAction="#onAddCashPayment"/>
+                </VBox>
+
+                <!-- ── CARD / TAP PANEL ───────────────────────────── -->
+                <VBox fx:id="cardPanel" styleClass="payment-input-panel" spacing="16"
+                      alignment="TOP_CENTER" VBox.vgrow="ALWAYS"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+                    <!-- Amount to charge -->
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Amount to charge on card" styleClass="pmt-field-label"
+                               HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="cardAmountLabel" text="Rs. 0.00" styleClass="pmt-cash-due"/>
+                    </HBox>
+
+                    <!-- Terminal waiting animation area -->
+                    <VBox alignment="CENTER" spacing="12" VBox.vgrow="ALWAYS" styleClass="terminal-waiting-box">
+                        <padding><Insets top="20" right="0" bottom="20" left="0"/></padding>
+                        <ProgressIndicator fx:id="cardSpinner" styleClass="card-terminal-spinner"
+                                           prefWidth="80" prefHeight="80"/>
+                        <Label text="Waiting for card terminal" styleClass="terminal-waiting-title"/>
+                        <Label text="Ask the customer to tap, insert or swipe on Terminal 2 – EDC"
+                               styleClass="terminal-waiting-sub" wrapText="true" textAlignment="CENTER"/>
+                    </VBox>
+
+                    <!-- Sub-options row -->
+                    <HBox spacing="8" alignment="CENTER">
+                        <Label text="Contactless card" styleClass="card-option-tag"/>
+                        <Label text="Apple Pay" styleClass="card-option-tag"/>
+                        <Label text="Google Pay" styleClass="card-option-tag"/>
+                        <Label text="Chip and PIN" styleClass="card-option-tag"/>
+                    </HBox>
+
+                    <!-- Action buttons -->
+                    <HBox spacing="10" alignment="CENTER">
+                        <Button text="Cancel request" styleClass="btn-cancel-card"
+                                onAction="#onCancelCard" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button text="Enter card manually" styleClass="btn-manual-card"
+                                onAction="#onEnterCardManually" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+                </VBox>
+
+                <!-- ── LANKAقR / OTHER PANEL ─────────────────────── -->
+                <VBox fx:id="qrPanel" styleClass="payment-input-panel" spacing="16"
+                      alignment="CENTER" VBox.vgrow="ALWAYS"
+                      visible="false" managed="false">
+                    <Label text="📱" styleClass="qr-placeholder-icon"/>
+                    <Label text="LankaQR Payment" styleClass="qr-placeholder-title"/>
+                    <Label text="Display QR code for customer to scan." wrapText="true"
+                           styleClass="qr-placeholder-sub" textAlignment="CENTER"/>
+                    <Label text="(QR integration pending backend setup)"
+                           styleClass="pmt-field-label" textAlignment="CENTER"/>
+                </VBox>
+
+            </VBox>
+
+            <!-- Vertical divider -->
+            <Separator orientation="VERTICAL" styleClass="payment-vsep"/>
+
+            <!-- ─────────────────────────────────────────────────────
+                 RIGHT — Payments added + summary
+                 ───────────────────────────────────────────────────── -->
+            <VBox styleClass="payments-added-panel" minWidth="260" maxWidth="320" spacing="0">
+
+                <!-- Header -->
+                <HBox styleClass="payments-added-header" alignment="CENTER_LEFT">
+                    <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+                    <Label text="Payments added" styleClass="payments-added-title" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="paymentsCountBadge" text="" styleClass="payments-count-badge"
+                           visible="false" managed="false"/>
+                </HBox>
+
+                <!-- List of added payments -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                            styleClass="payments-list-scroll">
+                    <VBox fx:id="paymentsListBox" styleClass="payments-list-container" spacing="0">
+                        <!-- empty state -->
+                        <Label fx:id="noPaymentsLabel"
+                               text="No payments yet. Split across tendering — add a payment, then cash."
+                               styleClass="no-payments-hint" wrapText="true"/>
+                    </VBox>
+                </ScrollPane>
+
+                <Separator styleClass="payment-vsep-h"/>
+
+                <!-- Totals summary -->
+                <VBox styleClass="payment-summary-block" spacing="8">
+                    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Total" styleClass="pmt-sum-label" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="summaryTotalLabel" text="Rs. 0.00" styleClass="pmt-sum-value"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Paid" styleClass="pmt-sum-label" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="summaryPaidLabel" text="Rs. 0.00" styleClass="pmt-sum-value"/>
+                    </HBox>
+                    <Separator styleClass="sale-separator"/>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Remaining balance" styleClass="pmt-remaining-label" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="summaryRemainingLabel" text="Rs. 0.00" styleClass="pmt-remaining-value"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Complete sale button -->
+                <VBox styleClass="complete-sale-box">
+                    <padding><Insets top="10" right="16" bottom="16" left="16"/></padding>
+                    <Button fx:id="completeSaleBtn" text="Complete sale"
+                            maxWidth="Infinity" styleClass="btn-complete-sale"
+                            onAction="#onCompleteSale" disable="true"/>
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

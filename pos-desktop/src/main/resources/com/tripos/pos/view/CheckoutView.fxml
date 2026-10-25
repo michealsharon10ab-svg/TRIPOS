@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<!--
+  CheckoutView.fxml  —  TriPOS POS Sale Screen
+  Reference: Figma "TriPOS — Unified POS — 01 Screens — B2 Sale"
+
+  Layout
+  ══════════════════════════════════════════════════════════
+  ┌──────────────────────── TOP BAR (dark) ─────────────────────────────┐
+  │ TriPOS   Hotel · Shop · Terminal · Cashier · Shift          Online  │
+  └─────────────────────────────────────────────────────────────────────┘
+  ┌───────── LEFT  65% ──────────────────┐ ┌─── RIGHT  35% ───────────┐
+  │  [Search bar]                        │ │  Current sale            │
+  │  [All][Tea][Groceries][Clothing]...  │ │  ──────────────────────  │
+  │                                      │ │  Customer row            │
+  │  ┌──────┐ ┌──────┐ ┌──────┐         │ │  ──────────────────────  │
+  │  │ card │ │ card │ │ card │         │ │  Item list (scrollable)  │
+  │  └──────┘ └──────┘ └──────┘         │ │  ──────────────────────  │
+  │  ┌──────┐ ┌──────┐ ┌──────┐         │ │  Subtotal / Disc / VAT  │
+  │  │ card │ │ card │ │ card │         │ │  Total                   │
+  │  └──────┘ └──────┘ └──────┘         │ │  ──────────────────────  │
+  │                                      │ │  [Disc][Note][Park][Void]│
+  │                                      │ │  [  Pay Rs. X.XX  ·  F8]│
+  └──────────────────────────────────────┘ └──────────────────────────┘
+
+  All product cards and sale item rows are built programmatically
+  in CheckoutController to allow live filtering and quantity updates.
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.tripos.pos.controller.CheckoutController"
+            styleClass="root-pane">
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         TOP BAR
+         ══════════════════════════════════════════════════════════════════ -->
+    <top>
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="0">
+            <padding><Insets top="0" right="20" bottom="0" left="0"/></padding>
+
+            <!-- Brand -->
+            <HBox alignment="CENTER" styleClass="header-brand-box" spacing="8">
+                <padding><Insets top="0" right="20" bottom="0" left="20"/></padding>
+                <Label text="TriPOS" styleClass="brand-title"/>
+            </HBox>
+
+            <!-- Separator -->
+            <Separator orientation="VERTICAL" styleClass="header-vsep"/>
+
+            <!-- Location info -->
+            <HBox spacing="6" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <padding><Insets top="0" right="0" bottom="0" left="16"/></padding>
+                <Label text="Colombo City Hotel" styleClass="header-meta-bold"/>
+                <Label text="·" styleClass="header-meta-dot"/>
+                <Label text="Gift shop" styleClass="header-meta"/>
+                <Label text="·" styleClass="header-meta-dot"/>
+                <Label text="Terminal 2" styleClass="header-meta"/>
+                <Label text="·" styleClass="header-meta-dot"/>
+                <Label text="Kaush Siva – Cashier" styleClass="header-meta"/>
+                <Label text="·" styleClass="header-meta-dot"/>
+                <Label text="Shift open · 6:00 AM" styleClass="header-meta-dim"/>
+            </HBox>
+
+            <!-- Right badges -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="● Online" styleClass="badge-online"/>
+                <Label fx:id="parkedBillsLabel" text="Parked bills: 0" styleClass="badge-parked"/>
+                <Button text="⋯" styleClass="header-menu-btn"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- ══════════════════════════════════════════════════════════════════
+         MAIN BODY
+         ══════════════════════════════════════════════════════════════════ -->
+    <center>
+        <HBox styleClass="main-body">
+
+            <!-- ────────────────────────────────────────────────────────────
+                 LEFT  —  Product Catalogue  (~65%)
+                 ──────────────────────────────────────────────────────────── -->
+            <VBox styleClass="catalogue-panel" HBox.hgrow="ALWAYS" spacing="0">
+
+                <!-- Search bar -->
+                <HBox styleClass="search-bar-row" alignment="CENTER_LEFT" spacing="10">
+                    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+                    <TextField fx:id="searchField"
+                               promptText="Scan barcode or search items"
+                               styleClass="catalogue-search"
+                               HBox.hgrow="ALWAYS"
+                               onAction="#onSearchEnter"/>
+                    <Button fx:id="clearSearchBtn" text="✕"
+                            styleClass="clear-search-btn"
+                            onAction="#onClearSearch"
+                            visible="false" managed="false"/>
+                </HBox>
+
+                <!-- Category tabs (populated programmatically) -->
+                <HBox fx:id="categoryTabsBox" styleClass="category-tabs-row"
+                      alignment="CENTER_LEFT" spacing="6">
+                    <padding><Insets top="0" right="16" bottom="10" left="16"/></padding>
+                </HBox>
+
+                <!-- Product grid (populated programmatically) -->
+                <ScrollPane fx:id="productScrollPane"
+                            fitToWidth="true" VBox.vgrow="ALWAYS"
+                            styleClass="product-scroll">
+                    <FlowPane fx:id="productGrid"
+                              styleClass="product-grid"
+                              hgap="12" vgap="12">
+                        <padding><Insets top="4" right="16" bottom="16" left="16"/></padding>
+                    </FlowPane>
+                </ScrollPane>
+
+                <!-- Footer status bar -->
+                <HBox styleClass="catalogue-footer" alignment="CENTER_LEFT" spacing="16">
+                    <padding><Insets top="8" right="16" bottom="8" left="16"/></padding>
+                    <Label fx:id="catalogueStatusLabel" text="" styleClass="footer-status"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="F2 Search" styleClass="shortcut-hint"/>
+                    <Label text="F4 Customer" styleClass="shortcut-hint"/>
+                    <Label text="Edit Clear" styleClass="shortcut-hint"/>
+                </HBox>
+            </VBox>
+
+            <!-- ────────────────────────────────────────────────────────────
+                 RIGHT  —  Current Sale  (~35%)
+                 ──────────────────────────────────────────────────────────── -->
+            <VBox fx:id="salePanelVBox" styleClass="sale-panel" minWidth="360" maxWidth="480">
+
+                <!-- Sale header -->
+                <HBox styleClass="sale-header" alignment="CENTER_LEFT">
+                    <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+                    <VBox HBox.hgrow="ALWAYS" spacing="2">
+                        <Label text="Current sale" styleClass="sale-heading"/>
+                        <Label fx:id="invoiceRefLabel" text="New sale" styleClass="sale-subheading"/>
+                    </VBox>
+                    <Button text="⋯" styleClass="sale-menu-btn"/>
+                </HBox>
+
+                <!-- Customer bar -->
+                <HBox fx:id="customerBar" styleClass="customer-bar" alignment="CENTER_LEFT" spacing="10">
+                    <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                    <StackPane styleClass="customer-avatar">
+                        <Label fx:id="customerInitials" text="?" styleClass="customer-initials"/>
+                    </StackPane>
+                    <VBox HBox.hgrow="ALWAYS" spacing="1">
+                        <Label fx:id="customerName" text="No customer" styleClass="customer-name"/>
+                        <Label fx:id="customerPoints" text="Add customer to apply loyalty" styleClass="customer-sub"/>
+                    </VBox>
+                    <Label fx:id="loyaltyBadge" text="" styleClass="loyalty-badge" visible="false" managed="false"/>
+                </HBox>
+
+                <Separator styleClass="sale-separator"/>
+
+                <!-- Item list (populated programmatically) -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                            styleClass="sale-items-scroll">
+                    <VBox fx:id="saleItemsBox" styleClass="sale-items-container" spacing="0"/>
+                </ScrollPane>
+
+                <!-- Empty cart placeholder (shown when cart is empty) -->
+                <VBox fx:id="emptyCartPlaceholder" alignment="CENTER" spacing="8"
+                      VBox.vgrow="ALWAYS" styleClass="empty-cart" visible="false" managed="false">
+                    <Label text="🛒" styleClass="empty-cart-icon"/>
+                    <Label text="No items in sale" styleClass="empty-cart-text"/>
+                    <Label text="Click a product to add it" styleClass="empty-cart-sub"/>
+                </VBox>
+
+                <Separator styleClass="sale-separator"/>
+
+                <!-- Totals block -->
+                <VBox styleClass="totals-block" spacing="6">
+                    <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Subtotal" styleClass="totals-label" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="subtotalLabel" text="Rs. 0.00" styleClass="totals-value"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label fx:id="discountRowLabel" text="Discount" styleClass="totals-label-green" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="discountLabel" text="–" styleClass="totals-value-green"/>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="VAT 18% (sample – included)" styleClass="totals-label-vat" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="vatLabel" text="Rs. 0.00" styleClass="totals-value-dim"/>
+                    </HBox>
+                    <Separator styleClass="sale-separator"/>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="Total" styleClass="totals-total-label" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="totalLabel" text="Rs. 0.00" styleClass="totals-total-value"/>
+                    </HBox>
+                </VBox>
+
+                <Separator styleClass="sale-separator"/>
+
+                <!-- Action buttons row -->
+                <HBox styleClass="sale-actions-row" alignment="CENTER" spacing="6">
+                    <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+                    <Button text="Discount" styleClass="action-btn" onAction="#onDiscountClicked"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="Note"     styleClass="action-btn" onAction="#onNoteClicked"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="Park"     styleClass="action-btn" onAction="#onParkClicked"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="Void"     styleClass="action-btn action-btn-danger" onAction="#onVoidClicked"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+
+                <!-- Validation -->
+                <Label fx:id="validationLabel" text="" styleClass="validation-label"
+                       wrapText="true" managed="false" visible="false">
+                    <padding><Insets top="0" right="12" bottom="0" left="12"/></padding>
+                </Label>
+
+                <!-- Pay button -->
+                <VBox styleClass="pay-button-box">
+                    <padding><Insets top="10" right="16" bottom="16" left="16"/></padding>
+                    <Button fx:id="payButton"
+                            text="Pay Rs. 0.00  ·  F8"
+                            maxWidth="Infinity"
+                            styleClass="btn-pay"
+                            onAction="#onPayClicked"/>
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,1835 @@
+/*
+ * pos-theme.css
+ * TRIPOS — Unified POS Desktop
+ *
+ * Design reference: Figma "TriPOS — Unified POS — 01 Screens"
+ *
+ * Colour tokens
+ * ─────────────────────────────────────────────────────────────
+ *  Yellow accent    #FFD21A   (primary button, tags, badges)
+ *  Near-black       #1A1A1A   (primary text, left brand panel)
+ *  Dark header      #0B0B0B   (top bar background)
+ *  White            #FFFFFF   (main panels, cards)
+ *  Light gray bg    #F4F4F5   (product grid background)
+ *  Border           #E4E4E7   (subtle dividers, field borders)
+ *  Muted text       #71717A   (secondary / hint text)
+ *  Danger           #EF4444   (error states)
+ *  Green            #22C55E   (in-stock badge)
+ *  Amber            #F59E0B   (warnings, low-stock)
+ *
+ * Typography: Segoe UI (Windows system) — best proxy for Inter.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ROOT
+   ══════════════════════════════════════════════════════════════════════════ */
+.root {
+    -fx-background-color: #F4F4F5;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOGIN — ROOT CONTAINER
+   ══════════════════════════════════════════════════════════════════════════ */
+.login-root {
+    -fx-background-color: #FFFFFF;
+    -fx-min-height: 600px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOGIN — LEFT BRAND PANEL
+   ══════════════════════════════════════════════════════════════════════════ */
+.brand-panel {
+    -fx-background-color: #0B0B0B;
+    -fx-padding: 48 52 48 52;
+    -fx-min-width: 420px;
+}
+
+/* Brand mark (2×2 grid) */
+.brand-mark-row {
+    -fx-padding: 0 0 0 0;
+}
+
+.brand-mark-grid {
+    -fx-padding: 0;
+}
+
+.mark-cell-accent {
+    -fx-fill: #FFD21A;
+    -fx-arc-width: 3;
+    -fx-arc-height: 3;
+}
+
+.mark-cell-dim {
+    -fx-fill: #3A3A3A;
+    -fx-arc-width: 3;
+    -fx-arc-height: 3;
+}
+
+.brand-name {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1px;
+}
+
+/* Icon tile cluster */
+.icon-cluster {
+    -fx-padding: 0 0 28 0;
+}
+
+.icon-tile {
+    -fx-background-color: #FFD21A;
+    -fx-background-radius: 18;
+    -fx-min-width: 96px;
+    -fx-min-height: 96px;
+    -fx-max-width: 96px;
+    -fx-max-height: 96px;
+}
+
+.tile-icon-path {
+    -fx-fill: transparent;
+    -fx-stroke: #1A1A1A;
+    -fx-stroke-width: 2.5;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+    -fx-scale-x: 0.62;
+    -fx-scale-y: 0.62;
+}
+
+/* Promotional copy */
+.promo-copy {
+    -fx-padding: 0 0 32 0;
+}
+
+.promo-headline {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 4;
+}
+
+.promo-body {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 3;
+}
+
+.pill-row {
+    -fx-padding: 6 0 0 0;
+}
+
+.pill-tag {
+    -fx-background-color: transparent;
+    -fx-border-color: #3F3F46;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+    -fx-padding: 4 12 4 12;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOGIN — RIGHT FORM PANEL
+   ══════════════════════════════════════════════════════════════════════════ */
+.login-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 40;
+    -fx-alignment: CENTER;
+}
+
+.login-form-card {
+    -fx-padding: 0;
+    -fx-max-width: 360px;
+    -fx-min-width: 280px;
+}
+
+.login-heading {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 4 0;
+}
+
+.login-subheading {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 24 0;
+}
+
+/* Field groups */
+.field-group {
+    -fx-padding: 0 0 16 0;
+}
+
+.field-label {
+    -fx-text-fill: #3F3F46;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.login-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D4D4D8;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: #1A1A1A;
+    -fx-prompt-text-fill: #A1A1AA;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 13.5px;
+    -fx-border-width: 1;
+}
+
+.login-field:focused {
+    -fx-border-color: #1A1A1A;
+    -fx-effect: dropshadow(gaussian, #FFD21A44, 0, 0, 0, 0);
+}
+
+/* Options row */
+.options-row {
+    -fx-padding: 0 0 16 0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.remember-check {
+    -fx-text-fill: #3F3F46;
+    -fx-font-size: 12.5px;
+}
+
+.remember-check .box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D4D4D8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-border-width: 1;
+}
+
+.remember-check:selected .box {
+    -fx-background-color: #FFD21A;
+    -fx-border-color: #FFD21A;
+}
+
+.remember-check:selected .mark {
+    -fx-background-color: #1A1A1A;
+}
+
+.forgot-link {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-underline: false;
+    -fx-border-color: transparent;
+}
+
+.forgot-link:hover {
+    -fx-text-fill: #1A1A1A;
+    -fx-underline: true;
+}
+
+/* Buttons */
+.btn-group {
+    -fx-padding: 0 0 0 0;
+}
+
+.btn-signin {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-pref-height: 44px;
+    -fx-padding: 0 20 0 20;
+    -fx-border-color: transparent;
+}
+
+.btn-signin:hover {
+    -fx-background-color: #FFDB3A;
+    -fx-effect: dropshadow(gaussian, #FFD21A55, 12, 0, 0, 3);
+}
+
+.btn-signin:pressed {
+    -fx-background-color: #E6BE00;
+}
+
+.btn-signin:disabled {
+    -fx-background-color: #FDEDB3;
+    -fx-text-fill: #A38600;
+    -fx-cursor: default;
+}
+
+/* Divider */
+.divider-row {
+    -fx-padding: 20 0 20 0;
+}
+
+.divider-label {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+    -fx-padding: 0 6 0 6;
+}
+
+.divider-row .separator .line {
+    -fx-border-color: #E4E4E7;
+}
+
+/* PIN button */
+.btn-pin {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D4D4D8;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-pref-height: 44px;
+    -fx-max-width: Infinity;
+    -fx-padding: 0 20 0 20;
+}
+
+.btn-pin:hover {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #1A1A1A;
+}
+
+.pin-lock-icon {
+    -fx-fill: transparent;
+    -fx-stroke: #3F3F46;
+    -fx-stroke-width: 1.8;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+.pin-btn-text {
+    -fx-text-fill: #3F3F46;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+}
+
+/* Error label */
+.login-error {
+    -fx-background-color: #FEF2F2;
+    -fx-background-radius: 6;
+    -fx-border-color: #FCA5A5;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12 8 12;
+    -fx-wrap-text: true;
+    -fx-margin: 0 0 14 0;
+}
+
+/* Loading spinner */
+.login-spinner {
+    -fx-progress-color: #FFD21A;
+}
+
+/* Footer metadata */
+.footer-meta {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+    -fx-text-alignment: CENTER;
+    -fx-padding: 20 0 0 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — TOP HEADER BAR
+   ══════════════════════════════════════════════════════════════════════════ */
+.root-pane {
+    -fx-background-color: #F4F4F5;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 13px;
+}
+
+.header-bar {
+    -fx-background-color: #0B0B0B;
+    -fx-border-color: #2A2A2A;
+    -fx-border-width: 0 0 1 0;
+}
+
+.brand-title {
+    -fx-text-fill: #FFD21A;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 2px;
+}
+
+.brand-sub {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 11px;
+}
+
+.header-sep {
+    -fx-background-color: #2A2A2A;
+}
+
+.module-label {
+    -fx-text-fill: #D4D4D8;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.prototype-badge {
+    -fx-background-color: #FFD21A22;
+    -fx-background-radius: 6;
+    -fx-border-color: #FFD21A;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-text-fill: #FFD21A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 10 4 10;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — SEARCH PANEL (LEFT)
+   ══════════════════════════════════════════════════════════════════════════ */
+.checkout-pane {
+    -fx-background-color: #F4F4F5;
+}
+
+.panel {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 1 0 0;
+}
+
+.panel-title {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.search-panel {
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 1 0 0;
+}
+
+.search-field {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 8;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-text-fill: #1A1A1A;
+    -fx-prompt-text-fill: #A1A1AA;
+    -fx-padding: 9 12 9 12;
+    -fx-font-size: 13px;
+}
+
+.search-field:focused {
+    -fx-border-color: #1A1A1A;
+    -fx-background-color: #FFFFFF;
+}
+
+.hint-label {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+}
+
+.tip-label {
+    -fx-text-fill: #C4C4CC;
+    -fx-font-size: 10px;
+    -fx-font-style: italic;
+}
+
+/* Product list */
+.product-list {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.product-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1A1A1A;
+    -fx-padding: 9 12 9 12;
+    -fx-font-size: 12.5px;
+    -fx-border-color: transparent transparent #F0F0F0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.product-list .list-cell:hover {
+    -fx-background-color: #FAFAFA;
+    -fx-cursor: hand;
+}
+
+.product-list .list-cell:selected {
+    -fx-background-color: #FFFBEB;
+    -fx-border-color: transparent transparent #FFD21A60 transparent;
+    -fx-text-fill: #1A1A1A;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — CART TABLE (CENTER)
+   ══════════════════════════════════════════════════════════════════════════ */
+.cart-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+.cart-table {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.cart-table .column-header-background {
+    -fx-background-color: #F9F9F9;
+}
+
+.cart-table .column-header .label {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.cart-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #F4F4F5 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.cart-table .table-row-cell:hover {
+    -fx-background-color: #FFFBEB;
+}
+
+.cart-table .table-row-cell:selected {
+    -fx-background-color: #FFFDE7;
+}
+
+.cart-table .table-cell {
+    -fx-text-fill: #1A1A1A;
+    -fx-padding: 9 6 9 8;
+    -fx-font-size: 12.5px;
+}
+
+/* Remove button inside table */
+.btn-remove {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 2 6 2 6;
+    -fx-background-radius: 4;
+    -fx-border-color: #FCA5A5;
+    -fx-border-radius: 4;
+    -fx-border-width: 1;
+}
+
+.btn-remove:hover {
+    -fx-background-color: #FEF2F2;
+    -fx-border-color: #EF4444;
+}
+
+/* Qty spinner in table */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #F4F4F5;
+    -fx-border-color: #E4E4E7;
+}
+
+.spinner .text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #1A1A1A;
+    -fx-border-color: #E4E4E7;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — BILL SUMMARY (RIGHT)
+   ══════════════════════════════════════════════════════════════════════════ */
+.summary-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 0 1;
+}
+
+.bill-row-label {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 13px;
+}
+
+.bill-row-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.bill-discount {
+    -fx-text-fill: #16A34A;
+}
+
+.tax-note-label {
+    -fx-text-fill: #F59E0B;
+    -fx-font-size: 10px;
+    -fx-font-style: italic;
+    -fx-wrap-text: true;
+}
+
+.total-label {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.total-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.discount-spinner {
+    -fx-background-color: #F4F4F5;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.discount-spinner .text-field {
+    -fx-background-color: #F4F4F5;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — PAYMENT METHOD BUTTONS
+   ══════════════════════════════════════════════════════════════════════════ */
+.btn-payment {
+    -fx-background-color: #F4F4F5;
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 10 8 10 8;
+}
+
+.btn-payment:hover {
+    -fx-background-color: #EFEFEF;
+    -fx-text-fill: #1A1A1A;
+}
+
+.btn-payment:selected {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-border-color: #E6BE00;
+    -fx-effect: dropshadow(gaussian, #FFD21A44, 8, 0, 0, 2);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — ACTION BUTTONS
+   ══════════════════════════════════════════════════════════════════════════ */
+.btn-primary {
+    -fx-background-color: #1A1A1A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 10 16 10 16;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #2A2A2A;
+    -fx-effect: dropshadow(gaussian, #00000033, 8, 0, 0, 2);
+}
+
+.btn-complete {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-padding: 14 16 14 16;
+    -fx-border-color: transparent;
+}
+
+.btn-complete:hover {
+    -fx-background-color: #FFDB3A;
+    -fx-effect: dropshadow(gaussian, #FFD21A55, 12, 0, 0, 3);
+}
+
+.btn-complete:pressed {
+    -fx-background-color: #E6BE00;
+}
+
+.btn-new-sale {
+    -fx-background-color: #1A1A1A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-padding: 12 24 12 24;
+}
+
+.btn-new-sale:hover {
+    -fx-background-color: #2A2A2A;
+    -fx-effect: dropshadow(gaussian, #00000033, 12, 0, 0, 3);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CHECKOUT — VALIDATION / NOTICES
+   ══════════════════════════════════════════════════════════════════════════ */
+.validation-label {
+    -fx-background-color: #FEF2F2;
+    -fx-background-radius: 6;
+    -fx-border-color: #FCA5A5;
+    -fx-border-radius: 6;
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 11.5px;
+    -fx-padding: 6 10 6 10;
+    -fx-wrap-text: true;
+}
+
+.prototype-notice {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 10px;
+    -fx-font-style: italic;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RECEIPT PANE
+   ══════════════════════════════════════════════════════════════════════════ */
+.receipt-pane {
+    -fx-background-color: #F4F4F5;
+}
+
+.receipt-success-banner {
+    -fx-background-color: linear-gradient(to right, #ECFDF5, #D1FAE5, #ECFDF5);
+    -fx-border-color: #22C55E;
+    -fx-border-width: 0 0 2 0;
+}
+
+.receipt-tick {
+    -fx-font-size: 40px;
+}
+
+.receipt-success-title {
+    -fx-text-fill: #15803D;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.receipt-success-sub {
+    -fx-text-fill: #166534;
+    -fx-font-size: 12px;
+}
+
+.receipt-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.receipt-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.receipt-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, #0000001A, 20, 0, 0, 4);
+}
+
+.receipt-store-name {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: center;
+    -fx-max-width: Infinity;
+}
+
+.receipt-meta {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.receipt-section-header {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.receipt-item-name {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+}
+
+.receipt-item-qty {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.receipt-item-price {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.receipt-row-label  { -fx-text-fill: #71717A;   -fx-font-size: 13px; }
+.receipt-row-value  { -fx-text-fill: #1A1A1A;   -fx-font-size: 13px; -fx-font-weight: bold; }
+.receipt-discount   { -fx-text-fill: #16A34A; }
+.receipt-tax-note   { -fx-text-fill: #F59E0B;   -fx-font-size: 10px; -fx-font-style: italic; }
+
+.receipt-total-label {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.receipt-total-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.receipt-footer {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-alignment: center;
+}
+
+.receipt-footer-disclaimer {
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SEPARATORS
+   ══════════════════════════════════════════════════════════════════════════ */
+.separator .line {
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SCROLLBARS
+   ══════════════════════════════════════════════════════════════════════════ */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: #F4F4F5;
+    -fx-pref-width: 7px;
+    -fx-pref-height: 7px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #D4D4D8;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #A1A1AA;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — HEADER BAR (dark bar matching Figma top bar)
+   ══════════════════════════════════════════════════════════════════════════ */
+.header-bar {
+    -fx-background-color: #0B0B0B;
+    -fx-pref-height: 44px;
+    -fx-min-height: 44px;
+    -fx-max-height: 44px;
+}
+
+.header-brand-box {
+    -fx-min-width: 90px;
+}
+
+.brand-title {
+    -fx-text-fill: #FFD21A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.header-vsep {
+    -fx-max-height: 22px;
+    -fx-background-color: #333333;
+}
+
+.header-meta-bold {
+    -fx-text-fill: #E4E4E7;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.header-meta {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 12px;
+}
+
+.header-meta-dim {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.header-meta-dot {
+    -fx-text-fill: #52525B;
+    -fx-font-size: 12px;
+}
+
+.badge-online {
+    -fx-text-fill: #22C55E;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-parked {
+    -fx-background-color: #27272A;
+    -fx-background-radius: 10;
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+    -fx-padding: 3 8 3 8;
+}
+
+.header-menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 2 6 2 6;
+}
+
+.header-menu-btn:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — MAIN BODY
+   ══════════════════════════════════════════════════════════════════════════ */
+.main-body {
+    -fx-background-color: #F4F4F5;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — LEFT CATALOGUE PANEL
+   ══════════════════════════════════════════════════════════════════════════ */
+.catalogue-panel {
+    -fx-background-color: #F4F4F5;
+}
+
+.search-bar-row {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.catalogue-search {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 8;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-text-fill: #1A1A1A;
+    -fx-prompt-text-fill: #A1A1AA;
+    -fx-padding: 9 14 9 14;
+    -fx-font-size: 13px;
+}
+
+.catalogue-search:focused {
+    -fx-border-color: #1A1A1A;
+    -fx-background-color: #FFFFFF;
+}
+
+.clear-search-btn {
+    -fx-background-color: #E4E4E7;
+    -fx-background-radius: 20;
+    -fx-text-fill: #52525B;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-width: 28px;
+    -fx-max-height: 28px;
+    -fx-padding: 0;
+}
+
+.clear-search-btn:hover {
+    -fx-background-color: #D4D4D8;
+    -fx-text-fill: #1A1A1A;
+}
+
+/* Category tabs */
+.category-tabs-row {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.category-tab {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 20;
+    -fx-border-color: transparent;
+    -fx-border-radius: 20;
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 16 6 16;
+    -fx-cursor: hand;
+}
+
+.category-tab:hover {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #1A1A1A;
+}
+
+.category-tab:selected {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-weight: bold;
+}
+
+/* Product grid & scroll */
+.product-scroll {
+    -fx-background-color: #F4F4F5;
+    -fx-background: #F4F4F5;
+}
+
+.product-scroll > .viewport {
+    -fx-background-color: #F4F4F5;
+}
+
+.product-grid {
+    -fx-background-color: transparent;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — PRODUCT CARDS (matching Figma yellow-top cards)
+   ══════════════════════════════════════════════════════════════════════════ */
+.product-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000008, 4, 0, 0, 1);
+}
+
+.product-card:hover {
+    -fx-border-color: #FFD21A;
+    -fx-effect: dropshadow(gaussian, #FFD21A22, 10, 0, 0, 2);
+}
+
+.card-img-area {
+    -fx-background-color: #FFFBEB;
+    -fx-background-radius: 10 10 0 0;
+    -fx-min-height: 110px;
+    -fx-alignment: CENTER;
+}
+
+.card-img-icon {
+    -fx-font-size: 36px;
+}
+
+.badge-in-stock {
+    -fx-background-color: #DCFCE7;
+    -fx-background-radius: 10;
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+}
+
+.card-body {
+    -fx-padding: 10;
+}
+
+.card-name {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}
+
+.card-price {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — CATALOGUE FOOTER
+   ══════════════════════════════════════════════════════════════════════════ */
+.catalogue-footer {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 1 0 0 0;
+}
+
+.footer-status {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 11px;
+}
+
+.shortcut-hint {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 4;
+    -fx-padding: 2 6 2 6;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — RIGHT SALE PANEL  (Current Sale)
+   ══════════════════════════════════════════════════════════════════════════ */
+.sale-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 0 1;
+}
+
+.sale-header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.sale-heading {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.sale-subheading {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+}
+
+.sale-menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+.sale-menu-btn:hover {
+    -fx-text-fill: #1A1A1A;
+}
+
+/* Customer bar */
+.customer-bar {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.customer-avatar {
+    -fx-background-color: #FFD21A;
+    -fx-background-radius: 20;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-max-width: 36px;
+    -fx-max-height: 36px;
+    -fx-alignment: CENTER;
+}
+
+.customer-initials {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.customer-name {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.customer-sub {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+}
+
+.loyalty-badge {
+    -fx-background-color: #FFD21A;
+    -fx-background-radius: 10;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+}
+
+.sale-separator .line {
+    -fx-border-color: #F0F0F0;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Sale items scroll */
+.sale-items-scroll {
+    -fx-background-color: #FFFFFF;
+    -fx-background: #FFFFFF;
+}
+
+.sale-items-scroll > .viewport {
+    -fx-background-color: #FFFFFF;
+}
+
+.sale-items-container {
+    -fx-background-color: #FFFFFF;
+}
+
+.item-separator .line {
+    -fx-border-color: #F4F4F5;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Sale item rows */
+.sale-item-row {
+    -fx-background-color: transparent;
+}
+
+.sale-item-row:hover {
+    -fx-background-color: #FAFAFA;
+}
+
+.sale-item-name {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.sale-item-variant {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 11px;
+}
+
+.sale-item-price {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: RIGHT;
+}
+
+/* Qty control buttons */
+.qty-control {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 6;
+    -fx-padding: 2 4 2 4;
+}
+
+.qty-btn {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-min-width: 26px;
+    -fx-min-height: 26px;
+    -fx-max-width: 26px;
+    -fx-max-height: 26px;
+    -fx-padding: 0;
+}
+
+.qty-btn:hover {
+    -fx-background-color: #FFD21A;
+    -fx-border-color: #FFD21A;
+}
+
+.qty-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Remove button (×) */
+.sale-remove-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D4D4D8;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 0 4 0 4;
+}
+
+.sale-remove-btn:hover {
+    -fx-text-fill: #EF4444;
+}
+
+/* Empty cart placeholder */
+.empty-cart {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 40 20 40 20;
+}
+
+.empty-cart-icon {
+    -fx-font-size: 36px;
+}
+
+.empty-cart-text {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.empty-cart-sub {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 12px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — TOTALS BLOCK
+   ══════════════════════════════════════════════════════════════════════════ */
+.totals-block {
+    -fx-background-color: #FFFFFF;
+}
+
+.totals-label {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 13px;
+}
+
+.totals-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.totals-label-green {
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 13px;
+}
+
+.totals-value-green {
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.totals-label-vat {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+.totals-value-dim {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.totals-total-label {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.totals-total-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — ACTION BUTTONS ROW  (Discount / Note / Park / Void)
+   ══════════════════════════════════════════════════════════════════════════ */
+.sale-actions-row {
+    -fx-background-color: #FFFFFF;
+}
+
+.action-btn {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 6;
+    -fx-text-fill: #52525B;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 6 8 6;
+    -fx-border-color: transparent;
+}
+
+.action-btn:hover {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #1A1A1A;
+}
+
+.action-btn-danger {
+    -fx-text-fill: #EF4444;
+}
+
+.action-btn-danger:hover {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #DC2626;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POS SALE — PAY BUTTON (big yellow bottom button)
+   ══════════════════════════════════════════════════════════════════════════ */
+.pay-button-box {
+    -fx-background-color: #FFFFFF;
+}
+
+.btn-pay {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-pref-height: 48px;
+    -fx-border-color: transparent;
+}
+
+.btn-pay:hover {
+    -fx-background-color: #FFDB3A;
+    -fx-effect: dropshadow(gaussian, #FFD21A55, 12, 0, 0, 3);
+}
+
+.btn-pay:pressed {
+    -fx-background-color: #E6BE00;
+}
+
+.btn-pay:disabled {
+    -fx-background-color: #FDEDB3;
+    -fx-text-fill: #A38600;
+    -fx-cursor: default;
+}
+
+/* Payment tabs in dialog */
+.payment-tab {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 8;
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 14 8 14;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8;
+}
+
+.payment-tab:hover {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #1A1A1A;
+}
+
+.payment-tab:selected {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PAYMENT SCREEN — B2 Payment (Card/Tap + Cash split)
+   ══════════════════════════════════════════════════════════════════════════ */
+.payment-root {
+    -fx-background-color: #FFFFFF;
+}
+
+.payment-header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.payment-title {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.payment-customer-sub {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.payment-header-total {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.payment-close-btn {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 20;
+    -fx-text-fill: #71717A;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-min-width: 32px; -fx-min-height: 32px;
+    -fx-max-width: 32px; -fx-max-height: 32px;
+    -fx-padding: 0;
+}
+
+.payment-close-btn:hover {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #1A1A1A;
+}
+
+.payment-body {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Method tabs scroll */
+.payment-tabs-scroll {
+    -fx-background-color: #FFFFFF;
+    -fx-background: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.payment-method-tabs {
+    -fx-background-color: #FFFFFF;
+}
+
+.pmt-method-tab {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 8;
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 14 8 14;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.pmt-method-tab:hover {
+    -fx-background-color: #EFEFEF;
+    -fx-text-fill: #1A1A1A;
+}
+
+.pmt-method-tab:selected {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-border-color: #E6BE00;
+}
+
+/* Left panel */
+.payment-left-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+.payment-input-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+.pmt-field-label {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+}
+
+.pmt-cash-due {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.pmt-cash-received {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Numpad */
+.numpad-grid {
+    -fx-alignment: CENTER;
+}
+
+.numpad-btn {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 8;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-min-width: 70px; -fx-min-height: 56px;
+    -fx-max-width: 70px; -fx-max-height: 56px;
+    -fx-border-color: transparent;
+}
+
+.numpad-btn:hover {
+    -fx-background-color: #E4E4E7;
+}
+
+.numpad-btn:pressed {
+    -fx-background-color: #FFD21A;
+}
+
+.numpad-clear {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #EF4444;
+}
+
+.numpad-clear:hover {
+    -fx-background-color: #FCA5A5;
+    -fx-text-fill: #1A1A1A;
+}
+
+/* Quick amounts */
+.quick-amount-btn {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 6 12 6 12;
+}
+
+.quick-amount-btn:hover {
+    -fx-background-color: #FFFBEB;
+    -fx-border-color: #FFD21A;
+}
+
+/* Change due box */
+.change-due-box {
+    -fx-background-color: #ECFDF5;
+    -fx-background-radius: 8;
+    -fx-border-color: #22C55E;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.change-due-label {
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.change-due-value {
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+/* Add payment button */
+.btn-add-payment {
+    -fx-background-color: #1A1A1A;
+    -fx-background-radius: 8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-pref-height: 44px;
+    -fx-border-color: transparent;
+}
+
+.btn-add-payment:hover {
+    -fx-background-color: #2A2A2A;
+}
+
+.btn-add-payment:disabled {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #A1A1AA;
+}
+
+/* Card terminal panel */
+.terminal-waiting-box {
+    -fx-background-color: #FAFAFA;
+    -fx-background-radius: 12;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.card-terminal-spinner {
+    -fx-progress-color: #FFD21A;
+}
+
+.terminal-waiting-title {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.terminal-waiting-sub {
+    -fx-text-fill: #71717A;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-text-alignment: CENTER;
+}
+
+.card-option-tag {
+    -fx-background-color: #F4F4F5;
+    -fx-background-radius: 20;
+    -fx-text-fill: #52525B;
+    -fx-font-size: 11px;
+    -fx-padding: 4 10 4 10;
+}
+
+.btn-cancel-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-pref-height: 42px;
+}
+
+.btn-cancel-card:hover {
+    -fx-border-color: #1A1A1A;
+    -fx-background-color: #FAFAFA;
+}
+
+.btn-manual-card {
+    -fx-background-color: #1A1A1A;
+    -fx-background-radius: 8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-pref-height: 42px;
+    -fx-border-color: transparent;
+}
+
+.btn-manual-card:hover {
+    -fx-background-color: #2A2A2A;
+}
+
+/* QR placeholder */
+.qr-placeholder-icon { -fx-font-size: 48px; }
+.qr-placeholder-title { -fx-text-fill: #1A1A1A; -fx-font-size: 16px; -fx-font-weight: bold; }
+.qr-placeholder-sub { -fx-text-fill: #71717A; -fx-font-size: 12px; }
+
+/* Dividers */
+.payment-vsep { -fx-background-color: #E4E4E7; }
+.payment-vsep-h .line { -fx-border-color: #E4E4E7; -fx-border-width: 1 0 0 0; }
+
+/* Right — Payments added */
+.payments-added-panel {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 0 1;
+}
+
+.payments-added-header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E4E4E7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.payments-added-title {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.payments-count-badge {
+    -fx-background-color: #FFD21A;
+    -fx-background-radius: 10;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+}
+
+.payments-list-scroll {
+    -fx-background-color: #FAFAFA;
+    -fx-background: #FAFAFA;
+}
+
+.payments-list-scroll > .viewport { -fx-background-color: #FAFAFA; }
+
+.payments-list-container { -fx-background-color: #FAFAFA; }
+
+.no-payments-hint {
+    -fx-text-fill: #A1A1AA;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-padding: 16;
+}
+
+.payment-entry-row {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #F4F4F5;
+    -fx-border-width: 0 0 1 0;
+}
+
+.payment-entry-method {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.payment-entry-amount {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.payment-entry-remove {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D4D4D8;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 0 4 0 4;
+}
+
+.payment-entry-remove:hover { -fx-text-fill: #EF4444; }
+
+/* Summary */
+.payment-summary-block { -fx-background-color: #FFFFFF; }
+
+.pmt-sum-label { -fx-text-fill: #71717A; -fx-font-size: 13px; }
+.pmt-sum-value { -fx-text-fill: #1A1A1A; -fx-font-size: 13px; -fx-font-weight: bold; }
+
+.pmt-remaining-label {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.pmt-remaining-value {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.pmt-remaining-value-zero {
+    -fx-text-fill: #16A34A;
+}
+
+/* Complete sale button */
+.complete-sale-box { -fx-background-color: #FFFFFF; }
+
+.btn-complete-sale {
+    -fx-background-color: #FFD21A;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-pref-height: 48px;
+    -fx-border-color: transparent;
+}
+
+.btn-complete-sale:hover {
+    -fx-background-color: #FFDB3A;
+    -fx-effect: dropshadow(gaussian, #FFD21A55, 12, 0, 0, 3);
+}
+
+.btn-complete-sale:disabled {
+    -fx-background-color: #E4E4E7;
+    -fx-text-fill: #A1A1AA;
+    -fx-cursor: default;
+}

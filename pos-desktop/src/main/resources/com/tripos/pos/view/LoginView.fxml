@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+  LoginView.fxml
+  TriPOS — A1 Login Screen
+  Visual spec: two-panel 50/50 layout
+    LEFT  — dark navy brand/promo panel   (#0A0F1E)
+    RIGHT — slightly lighter login panel  (#0F1523)
+
+  Color theme: TRIPOS dark-navy / teal palette (NOT yellow/white).
+  The yellow accent from the A1 reference is mapped to teal #00C2B2.
+
+  Authentication: PROTOTYPE ONLY — connect onSignInClicked() to the
+  real Spring Boot POST /api/auth/login when backend is ready.
+  No credentials are pre-filled.
+-->
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tripos.pos.controller.LoginController"
+      styleClass="login-root"
+      minWidth="900"
+      minHeight="600">
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         LEFT BRAND PANEL
+         ══════════════════════════════════════════════════════════════════════ -->
+    <VBox styleClass="brand-panel" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+
+        <!-- ── Top-left brand mark ─────────────────────────────────────── -->
+        <HBox styleClass="brand-mark-row" alignment="CENTER_LEFT" spacing="10">
+            <!-- 2×2 rounded-square mark: alternating teal / muted cells -->
+            <GridPane styleClass="brand-mark-grid" hgap="3" vgap="3">
+                <Rectangle styleClass="mark-cell-accent"
+                           width="10" height="10" arcWidth="3" arcHeight="3"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Rectangle styleClass="mark-cell-dim"
+                           width="10" height="10" arcWidth="3" arcHeight="3"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Rectangle styleClass="mark-cell-dim"
+                           width="10" height="10" arcWidth="3" arcHeight="3"
+                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Rectangle styleClass="mark-cell-accent"
+                           width="10" height="10" arcWidth="3" arcHeight="3"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="TriPOS" styleClass="brand-name"/>
+        </HBox>
+
+        <!-- ── Spacer pushes icon cluster to vertical center-lower area ── -->
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- ── Icon tile cluster (triangle arrangement) ─────────────────── -->
+        <VBox alignment="CENTER" spacing="12" styleClass="icon-cluster">
+
+            <!-- Top-center: Shop tile -->
+            <HBox alignment="CENTER">
+                <StackPane styleClass="icon-tile" prefWidth="96" prefHeight="96">
+                    <!-- Shop / storefront line icon (SVG path) -->
+                    <SVGPath styleClass="tile-icon-path"
+                             content="M 48 16 L 14 34 L 14 80 L 34 80 L 34 56 L 62 56 L 62 80 L 82 80 L 82 34 Z M 48 16 L 14 34 M 28 80 L 28 60 L 68 60 L 68 80"
+                             scaleX="0.9" scaleY="0.9"/>
+                </StackPane>
+            </HBox>
+
+            <!-- Bottom row: Restaurant + Hotel -->
+            <HBox alignment="CENTER" spacing="16">
+
+                <!-- Restaurant / utensils tile -->
+                <StackPane styleClass="icon-tile" prefWidth="96" prefHeight="96">
+                    <SVGPath styleClass="tile-icon-path"
+                             content="M 36 20 L 36 50 M 36 50 C 36 58 44 62 48 62 C 52 62 60 58 60 50 L 60 20 M 48 62 L 48 80 M 36 30 L 60 30"
+                             scaleX="0.9" scaleY="0.9"/>
+                </StackPane>
+
+                <!-- Hotel / bed tile -->
+                <StackPane styleClass="icon-tile" prefWidth="96" prefHeight="96">
+                    <SVGPath styleClass="tile-icon-path"
+                             content="M 16 70 L 16 50 C 16 46 20 44 24 44 L 72 44 C 76 44 80 46 80 50 L 80 70 M 16 60 L 80 60 M 16 70 L 80 70 M 16 44 L 16 30 M 32 44 C 32 38 28 34 24 34 C 20 34 16 38 16 44"
+                             scaleX="0.9" scaleY="0.9"/>
+                </StackPane>
+
+            </HBox>
+        </VBox>
+
+        <!-- ── Promotional copy ──────────────────────────────────────────── -->
+        <VBox styleClass="promo-copy" spacing="10">
+            <Label styleClass="promo-headline" wrapText="true"
+                   text="One POS for shops, restaurants and hotels"/>
+            <Label styleClass="promo-body" wrapText="true"
+                   text="Billing, kitchen orders, room folios and stock — across every branch, even when the internet drops."/>
+
+            <!-- Pill tags -->
+            <HBox spacing="8" alignment="CENTER_LEFT" styleClass="pill-row">
+                <Label text="Retail"      styleClass="pill-tag"/>
+                <Label text="Restaurant"  styleClass="pill-tag"/>
+                <Label text="Hotel"       styleClass="pill-tag"/>
+            </HBox>
+        </VBox>
+
+        <!-- ── Bottom breathing room ─────────────────────────────────────── -->
+        <Region prefHeight="40"/>
+
+    </VBox>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         RIGHT LOGIN PANEL
+         ══════════════════════════════════════════════════════════════════════ -->
+    <VBox styleClass="login-panel" alignment="CENTER" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+
+        <!-- Login card — no raised border, sits on the panel directly -->
+        <VBox fx:id="formCard" styleClass="login-form-card" spacing="0" maxWidth="360" minWidth="280">
+
+            <!-- ── Heading ───────────────────────────────────────────────── -->
+            <Label text="Welcome back" styleClass="login-heading"/>
+            <Label text="Sign in to Lanka Leisure Group" styleClass="login-subheading"/>
+            <!-- NOTE: "Lanka Leisure Group" is demo/reference tenant copy.
+                 Resolve from terminal configuration in production. -->
+
+            <!-- ── Error feedback (ARIA live region via label) ────────────── -->
+            <Label fx:id="errorLabel" text="" styleClass="login-error"
+                   wrapText="true" visible="false" managed="false"/>
+
+            <!-- ── Username ──────────────────────────────────────────────── -->
+            <VBox styleClass="field-group" spacing="6">
+                <Label text="Username or email" styleClass="field-label"/>
+                <TextField fx:id="usernameField"
+                           promptText="Enter username or email"
+                           styleClass="login-field"/>
+                <!-- NOTE: No credentials are pre-filled. -->
+            </VBox>
+
+            <!-- ── Password ──────────────────────────────────────────────── -->
+            <VBox styleClass="field-group" spacing="6">
+                <Label text="Password" styleClass="field-label"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="Enter password"
+                               styleClass="login-field"/>
+            </VBox>
+
+            <!-- ── Remember + Forgot row ──────────────────────────────────── -->
+            <HBox styleClass="options-row" alignment="CENTER_LEFT">
+                <CheckBox fx:id="rememberTerminalCheck"
+                          text="Remember this terminal"
+                          styleClass="remember-check"
+                          HBox.hgrow="ALWAYS"/>
+                <Hyperlink fx:id="forgotPasswordLink"
+                           text="Forgot password?"
+                           styleClass="forgot-link"
+                           onAction="#onForgotPasswordClicked"/>
+            </HBox>
+
+            <!-- ── Sign-in button ─────────────────────────────────────────── -->
+            <VBox styleClass="btn-group" spacing="8">
+                <HBox alignment="CENTER" spacing="8">
+                    <Button fx:id="signInButton"
+                            text="Sign in"
+                            maxWidth="Infinity"
+                            styleClass="btn-signin"
+                            onAction="#onSignInClicked"
+                            HBox.hgrow="ALWAYS"
+                            defaultButton="true"/>
+                    <ProgressIndicator fx:id="loadingSpinner"
+                                       prefWidth="24" prefHeight="24"
+                                       styleClass="login-spinner"
+                                       visible="false" managed="false"/>
+                </HBox>
+            </VBox>
+
+            <!-- ── Divider ────────────────────────────────────────────────── -->
+            <HBox styleClass="divider-row" alignment="CENTER" spacing="10">
+                <Separator HBox.hgrow="ALWAYS"/>
+                <Label text="or" styleClass="divider-label"/>
+                <Separator HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- ── PIN login button ───────────────────────────────────────── -->
+            <Button fx:id="pinLoginButton"
+                    maxWidth="Infinity"
+                    styleClass="btn-pin"
+                    onAction="#onPinLoginClicked">
+                <graphic>
+                    <HBox spacing="8" alignment="CENTER">
+                        <!-- Lock icon as SVG path -->
+                        <SVGPath styleClass="pin-lock-icon"
+                                 content="M 7 11 L 7 7 C 7 4.2 9.2 2 12 2 C 14.8 2 17 4.2 17 7 L 17 11 M 5 11 L 19 11 C 19.6 11 20 11.4 20 12 L 20 20 C 20 20.6 19.6 21 19 21 L 5 21 C 4.4 21 4 20.6 4 20 L 4 12 C 4 11.4 4.4 11 5 11 Z"
+                                 scaleX="1" scaleY="1"/>
+                        <Label text="Use PIN login" styleClass="pin-btn-text"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <!-- ── Footer metadata ───────────────────────────────────────── -->
+            <Label styleClass="footer-meta"
+                   text="Colombo City Hotel  ·  Terminal 2  ·  TriPOS v1.0"
+                   alignment="CENTER" maxWidth="Infinity"/>
+            <!-- NOTE: Location, terminal ID and version are demo/reference values.
+                 Populate from terminal configuration in production. -->
+
+        </VBox>
+    </VBox>
+
+</HBox>
