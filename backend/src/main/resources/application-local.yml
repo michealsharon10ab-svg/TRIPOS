@@ -1,0 +1,46 @@
+# ============================================================
+# LOCAL PROFILE — Runs entirely in-memory (H2 + no Redis)
+# Use when MySQL / Docker is not available.
+# Start with: mvn spring-boot:run -Dspring-boot.run.profiles=local
+# ============================================================
+spring:
+  datasource:
+    url: jdbc:h2:mem:bughuntersdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;NON_KEYWORDS=VALUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: false   # H2 schema is managed by Hibernate ddl-auto
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  # H2 web console — accessible at http://localhost:8080/h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    access-token-expiration-ms: 3600000      # 1 hour
+    refresh-token-expiration-ms: 604800000   # 7 days
+    issuer: bughunters-pos-local
+  security:
+    pin:
+      max-failed-attempts: 5
+      lockout-duration-minutes: 15
+    two-factor:
+      issuer: "TriPOS-BugHunters"
