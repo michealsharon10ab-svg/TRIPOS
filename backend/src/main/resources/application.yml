@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: bughunters-pos
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    access-token-expiration-ms: 3600000 # 1 hour
+    refresh-token-expiration-ms: 604800000 # 7 days
+    issuer: bughunters-pos
+  security:
+    pin:
+      max-failed-attempts: 5
+      lockout-duration-minutes: 15
+    two-factor:
+      issuer: "TriPOS-BugHunters"
