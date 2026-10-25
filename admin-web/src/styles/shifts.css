@@ -1,0 +1,284 @@
+/* Payments & Shifts / Close Shift View Styles */
+.shifts-page-container {
+  padding: 1.5rem 2rem;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 70px);
+}
+
+/* Cashier Shift Banner Card */
+.shift-cashier-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.cashier-left-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cashier-avatar-gold {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f5b700;
+  color: #0b0c10;
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cashier-info-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cashier-info-subtitle {
+  font-size: 0.825rem;
+  color: #64748b;
+  margin-top: 0.2rem;
+}
+
+.shift-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #eff6ff;
+  color: #2563eb;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.shift-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+}
+
+/* Two Column Layout */
+.shift-grid-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .shift-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panel Card */
+.shift-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.shift-card-header {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+/* Sales by Tender Table */
+.tender-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tender-table th {
+  text-align: left;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tender-table th:last-child {
+  text-align: right;
+}
+
+.tender-table th:nth-child(2) {
+  text-align: center;
+}
+
+.tender-table td {
+  padding: 0.85rem 0.5rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.tender-table td:nth-child(2) {
+  text-align: center;
+  color: #64748b;
+}
+
+.tender-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.tender-table tr.total-row td {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0f172a;
+  border-top: 1.5px solid #e2e8f0;
+  border-bottom: none;
+  padding-top: 1rem;
+}
+
+.tender-footer-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.tender-footer-meta strong {
+  color: #0f172a;
+}
+
+/* Cash Drawer Section */
+.drawer-line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.drawer-line-item strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.drawer-line-item.expected {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.drawer-line-item.counted {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Green Variance Banner */
+.variance-banner {
+  background-color: #dcfce7;
+  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #15803d;
+  font-weight: 700;
+  margin: 1.25rem 0;
+}
+
+.variance-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.variance-amount {
+  font-size: 1.15rem;
+}
+
+/* Notes & Sign-off */
+.drawer-notes-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  margin-bottom: 1.25rem;
+}
+
+.manager-signoff-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.manager-avatar-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f5b700;
+  color: #0b0c10;
+  font-weight: 800;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manager-pin-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.manager-pin-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #0f172a;
+}
+
+.btn-close-shift {
+  width: 100%;
+  background-color: #f5b700;
+  color: #0b0c10;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(245, 183, 0, 0.25);
+}
+
+.btn-close-shift:hover {
+  background-color: #eab308;
+  transform: translateY(-1px);
+}
