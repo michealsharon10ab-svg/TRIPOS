@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bughunters-mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-bughunters_pos}
+      MYSQL_USER: ${DB_USER:-pos_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-pos_secret}
+    ports:
+      - "3306:3306"
+    volumes:
+      - pos_mysqldata:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: bughunters-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: bughunters-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME:-bughunters_pos}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-pos_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-pos_secret}
+      SPRING_REDIS_HOST: redis
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pos_mysqldata:

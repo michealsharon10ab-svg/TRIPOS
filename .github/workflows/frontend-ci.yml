@@ -1,0 +1,46 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'admin-web/**'
+      - 'kitchen-display/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'admin-web/**'
+      - 'kitchen-display/**'
+
+jobs:
+  admin-web-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: admin-web/package.json
+      - name: Install dependencies & Build Admin Web
+        working-directory: ./admin-web
+        run: |
+          npm ci || npm install
+          npm run build
+
+  kitchen-display-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: kitchen-display/package.json
+      - name: Install dependencies & Build Kitchen Display
+        working-directory: ./kitchen-display
+        run: |
+          npm ci || npm install
+          npm run build
