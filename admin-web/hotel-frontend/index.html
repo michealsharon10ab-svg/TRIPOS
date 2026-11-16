@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TriPOS — Hotel &amp; Reservations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/pages.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════════════════ SIDEBAR ══════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ffd600" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div><div class="brand-name">TriPOS</div><div class="brand-sub">UNIFIED POS</div></div>
+  </div>
+
+  <div class="sidebar-branch">
+    <div class="branch-top">
+      <div class="branch-dot"></div>
+      <div class="branch-info">
+        <div class="branch-name">Colombo City Hotel</div>
+        <div class="branch-sub">Hotel · Restaurant · Shop</div>
+      </div>
+      <svg class="branch-chevron" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <!-- Dashboard: LayoutDashboard icon -->
+    <a class="nav-item" data-page="dashboard" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="9" rx="1"/>
+        <rect x="14" y="3" width="7" height="5" rx="1"/>
+        <rect x="14" y="12" width="7" height="9" rx="1"/>
+        <rect x="3" y="16" width="7" height="5" rx="1"/>
+      </svg>
+      Dashboard
+    </a>
+
+    <!-- POS / Sell: ShoppingBag / Tag icon -->
+    <a class="nav-item" data-page="pos" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      POS / Sell
+    </a>
+
+    <!-- Tables & Orders: layout grid icon -->
+    <a class="nav-item" data-page="tables" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      Tables &amp; Orders
+    </a>
+
+    <!-- Kitchen Display: UtensilsCrossed icon -->
+    <a class="nav-item" data-page="kitchen" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/>
+        <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15z"/>
+        <path d="m7 21 6-6"/>
+        <path d="M3 21 17 7"/>
+      </svg>
+      Kitchen Display
+    </a>
+
+    <!-- Rooms & Reservations: Building / Hotel icon (ACTIVE) -->
+    <a class="nav-item active" data-page="hotel" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="2" width="16" height="20" rx="2"/>
+        <path d="M9 22v-4h6v4"/>
+        <path d="M8 6h.01"/>
+        <path d="M16 6h.01"/>
+        <path d="M8 10h.01"/>
+        <path d="M16 10h.01"/>
+        <path d="M8 14h.01"/>
+        <path d="M16 14h.01"/>
+      </svg>
+      Rooms &amp; Reservations
+    </a>
+
+    <!-- Inventory: Package icon -->
+    <a class="nav-item nav-has-sub" data-page="inventory" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+        <path d="M12 22V12"/>
+        <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/>
+        <path d="m7.5 4.27 9 5.15"/>
+      </svg>
+      Inventory
+      <svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <!-- Customers & Loyalty: Users icon -->
+    <a class="nav-item nav-has-sub" data-page="customers" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Customers &amp; Loya...
+      <svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <!-- Payments & Shifts: CreditCard icon -->
+    <a class="nav-item" data-page="payments" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <line x1="2" y1="10" x2="22" y2="10"/>
+      </svg>
+      Payments &amp; Shifts
+    </a>
+
+    <!-- Reports: BarChart3 icon -->
+    <a class="nav-item" data-page="reports" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3v18h18"/>
+        <path d="M7 16v-5"/>
+        <path d="M11 16V8"/>
+        <path d="M15 16v-3"/>
+        <path d="M19 16v-8"/>
+      </svg>
+      Reports
+    </a>
+
+    <!-- Settings: Settings2 / gear icon -->
+    <a class="nav-item nav-has-sub" data-page="settings" href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 7H9"/>
+        <path d="M14 17H3"/>
+        <circle cx="17" cy="17" r="3"/>
+        <circle cx="7" cy="7" r="3"/>
+      </svg>
+      Settings
+      <svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar" style="background:linear-gradient(140deg,#6366f1,#8b5cf6)">DJ</div>
+    <div class="user-info"><div class="user-name">Dilani Jayasuriya</div><div class="user-role">Owner</div></div>
+    <svg class="user-menu-icon" viewBox="0 0 24 24" fill="none" stroke="#45455e" stroke-width="1.8"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════ MAIN ══════════════════════════════ -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-breadcrumb">
+      <span class="bc-parent" id="bc-parent">Rooms &amp; Reservations</span>
+      <span class="bc-sep">›</span>
+      <span class="bc-current" id="bc-current">Room status board</span>
+    </div>
+    <div class="topbar-search">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input placeholder="Search..." autocomplete="off" id="global-search">
+    </div>
+    <div class="topbar-branch-pill">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Colombo City Hotel
+      <svg width="10" height="6" fill="none" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="status-pill"><span class="pulse-dot"></span>Online</div>
+    <button class="topbar-icon-btn" id="notif-btn" title="Notifications">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </button>
+    <div class="shift-pill">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Shift open · <span id="clock-time">8:00 AM</span>
+    </div>
+    <div class="topbar-avatar" style="background:linear-gradient(140deg,#6366f1,#8b5cf6)">DJ</div>
+  </header>
+
+  <!-- ══════════ HOTEL PAGE ══════════ -->
+  <div class="section-page active" id="page-hotel">
+    <!-- Hotel Sub-nav -->
+    <div class="hotel-subnav">
+      <button class="subnav-tab active" data-tab="room-board">Room board</button>
+      <button class="subnav-tab" data-tab="reservations">Reservations</button>
+      <button class="subnav-tab" data-tab="checkin-out">Check-in / out</button>
+      <button class="subnav-tab" data-tab="guests">Guests</button>
+    </div>
+
+    <!-- TAB: ROOM BOARD -->
+    <div class="hotel-tab-content active" id="content-room-board">
+      <div class="stat-pills-row">
+        <div class="stat-pill vacant" data-filter="Vacant"><span class="sp-count">—</span><span class="sp-label">Vacant</span></div>
+        <div class="stat-pill occupied" data-filter="Occupied"><span class="sp-count">—</span><span class="sp-label">Occupied</span></div>
+        <div class="stat-pill dirty" data-filter="Dirty"><span class="sp-count">—</span><span class="sp-label">Dirty</span></div>
+        <div class="stat-pill maintenance" data-filter="Maintenance"><span class="sp-count">—</span><span class="sp-label">Maintenance</span></div>
+        <div class="sp-divider"></div>
+        <div class="stat-pill arrivals"><span class="sp-count">—</span><span class="sp-label">Arrivals today</span></div>
+        <div class="stat-pill departures"><span class="sp-count">—</span><span class="sp-label">Departures today</span></div>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-pills">
+          <button class="fpill active" data-filter="all">All</button>
+          <button class="fpill" data-filter="vacant">Vacant</button>
+          <button class="fpill" data-filter="occupied">Occupied</button>
+          <button class="fpill" data-filter="dirty">Dirty</button>
+          <button class="fpill" data-filter="reserved">Reserved today</button>
+        </div>
+        <div class="filter-right">
+          <select class="filter-select" id="room-type-filter">
+            <option value="all">All room types</option>
+            <option value="standard">Standard</option>
+            <option value="deluxe">Deluxe</option>
+            <option value="suite">Suite</option>
+          </select>
+          <button class="btn-action btn-primary-action" id="btn-add-room">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Room
+          </button>
+        </div>
+      </div>
+      <div class="room-board-layout">
+        <div class="room-board-main" id="room-board-main">
+          <div class="rooms-empty-state">
+            <div class="empty-state-card">
+              <svg width="52" height="52" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <h3>No rooms loaded</h3>
+              <p>Room cards appear here once the database is connected.<br>API: <code>GET /api/hotel/rooms</code></p>
+              <button class="btn-action btn-primary-action" onclick="openModal('modal-add-room')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add First Room
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="room-detail-panel" id="room-detail-panel">
+          <div class="rdp-empty">
+            <svg width="36" height="36" fill="none" stroke="#d1d5db" stroke-width="1.3" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <p>Select a room to view details</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: RESERVATIONS -->
+    <div class="hotel-tab-content" id="content-reservations">
+      <div class="tab-page-wrap">
+        <div class="tph">
+          <div><div class="tph-title">Reservations</div><div class="tph-sub">All upcoming and active reservations</div></div>
+          <div class="tph-actions">
+            <div class="res-view-toggle">
+              <button class="rvt-btn active" data-view="list">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>List
+              </button>
+              <button class="rvt-btn" data-view="timeline">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Timeline
+              </button>
+            </div>
+            <button class="btn-action btn-primary-action" id="btn-new-res">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Reservation
+            </button>
+          </div>
+        </div>
+        <div class="tph-filters">
+          <div class="search-box"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search guest, room, reservation…" id="res-search"></div>
+          <select class="filter-select" id="res-status-filter"><option value="">All Statuses</option><option>CONFIRMED</option><option>CHECKED_IN</option><option>CHECKED_OUT</option><option>CANCELLED</option></select>
+          <select class="filter-select"><option value="">All Room Types</option><option>Standard</option><option>Deluxe</option><option>Suite</option></select>
+          <input type="date" class="filter-select" style="width:140px" id="res-date-from">
+          <input type="date" class="filter-select" style="width:140px" id="res-date-to">
+        </div>
+        <div class="table-card">
+          <div class="table-wrap">
+            <table id="res-table">
+              <thead><tr><th>Reservation #</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Source</th><th>Status</th><th>Total (Rs.)</th><th>Actions</th></tr></thead>
+              <tbody id="res-tbody">
+                <tr><td colspan="10" class="table-empty-row"><div class="table-empty">
+                  <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <p>No reservations. Connect the database or create one.</p>
+                  <button class="btn-action btn-primary-action" onclick="openModal('modal-new-res')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Reservation</button>
+                </div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Timeline view (hidden by default) -->
+        <div class="timeline-view" id="timeline-view" style="display:none">
+          <div class="table-card">
+            <div class="timeline-empty">
+              <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <p>Timeline will show reservation bars per room once the database is connected.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CHECK-IN / OUT -->
+    <div class="hotel-tab-content" id="content-checkin-out">
+      <div class="tab-page-wrap">
+        <div class="tph">
+          <div><div class="tph-title">Check-in / out</div><div class="tph-sub" id="today-date-sub">Loading date...</div></div>
+          <div class="tph-actions">
+            <button class="btn-action btn-secondary-action" id="btn-walkin">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Walk-in
+            </button>
+            <button class="btn-action btn-primary-action" id="btn-new-res-ci">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Reservation
+            </button>
+          </div>
+        </div>
+        <div class="checkin-two-col">
+          <div class="checkin-col">
+            <div class="checkin-col-header arriving">
+              <div class="cc-header-left"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Arriving Today</div>
+              <span class="cc-count">0</span>
+            </div>
+            <div class="checkin-col-body">
+              <div class="checkin-empty">
+                <svg width="36" height="36" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <p>No arrivals today</p>
+                <span class="checkin-api-hint">API: <code>GET /api/hotel/reservations?checkin=today&status=CONFIRMED</code></span>
+              </div>
+            </div>
+          </div>
+          <div class="checkin-col">
+            <div class="checkin-col-header departing">
+              <div class="cc-header-left"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Departing Today</div>
+              <span class="cc-count">0</span>
+            </div>
+            <div class="checkin-col-body">
+              <div class="checkin-empty">
+                <svg width="36" height="36" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <p>No departures today</p>
+                <span class="checkin-api-hint">API: <code>GET /api/hotel/reservations?checkout=today&status=CHECKED_IN</code></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Guest Folio panel -->
+        <div class="folio-section">
+          <div class="tph" style="margin-bottom:16px">
+            <div><div class="tph-title" style="font-size:15px">Guest Folio &amp; Check-out</div><div class="tph-sub">Select an active stay above to view charges</div></div>
+            <div class="tph-actions">
+              <button class="btn-action btn-secondary-action" id="btn-print-folio" disabled>
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print Folio
+              </button>
+              <button class="btn-action btn-secondary-action" id="btn-pdf-invoice" disabled>
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF Invoice
+              </button>
+            </div>
+          </div>
+          <div class="folio-empty-card">
+            <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>Select an active stay to view the guest folio and process check-out.</p>
+            <span class="checkin-api-hint">API: <code>GET /api/hotel/reservations/{id}/folio</code></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: GUESTS -->
+    <div class="hotel-tab-content" id="content-guests">
+      <div class="tab-page-wrap">
+        <div class="tph">
+          <div><div class="tph-title">Guests</div><div class="tph-sub">All registered guests and stay history</div></div>
+          <div class="tph-actions">
+            <button class="btn-action btn-secondary-action" id="btn-export-csv">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export CSV
+            </button>
+            <button class="btn-action btn-primary-action" id="btn-add-guest">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Add Guest
+            </button>
+          </div>
+        </div>
+        <div class="tph-filters">
+          <div class="search-box"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search by name, NIC, phone…" id="guest-search"></div>
+          <select class="filter-select"><option>All Nationalities</option><option>Sri Lankan</option><option>Indian</option><option>British</option><option>Australian</option></select>
+          <select class="filter-select"><option>All Stays</option><option>Currently staying</option><option>Past guests</option><option>Upcoming</option></select>
+        </div>
+        <div class="table-card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Guest</th><th>NIC / Passport</th><th>Nationality</th><th>Phone</th><th>Email</th><th>Total Stays</th><th>Last Stay</th><th>Actions</th></tr></thead>
+              <tbody id="guest-tbody">
+                <tr><td colspan="8" class="table-empty-row"><div class="table-empty">
+                  <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <p>No guests yet. They appear automatically when reservations are made.</p>
+                  <button class="btn-action btn-primary-action" onclick="openModal('modal-add-guest')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Add First Guest</button>
+                </div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ REPORTS PAGE ══════════ -->
+  <div class="section-page" id="page-reports">
+    <div class="reports-subnav">
+      <button class="subnav-tab" data-rtab="stock-val">Stock valuation</button>
+      <button class="subnav-tab" data-rtab="stock-mov">Stock movement</button>
+      <button class="subnav-tab" data-rtab="wastage">Wastage</button>
+      <button class="subnav-tab" data-rtab="reorder">Reorder suggestions</button>
+      <button class="subnav-tab" data-rtab="margin">Profit margin</button>
+      <button class="subnav-tab active" data-rtab="hotel-occ">Hotel occupancy</button>
+    </div>
+    <div class="tab-page-wrap">
+      <div class="tph">
+        <div><div class="tph-title">Inventory &amp; hotel reports</div><div class="tph-sub">Hotel occupancy analysis</div></div>
+        <div class="tph-actions">
+          <button class="btn-action btn-secondary-action" id="btn-rpt-pdf">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF
+          </button>
+          <button class="btn-action btn-secondary-action" id="btn-rpt-reset">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.45"/></svg>Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Report filters -->
+      <div class="rpt-filters">
+        <div class="rpt-filter-group">
+          <label class="rpt-filter-label">Date range</label>
+          <div class="rpt-date-range">
+            <input type="date" class="filter-select" id="rpt-date-from" style="width:140px">
+            <span style="color:#6b7280;font-size:12px">—</span>
+            <input type="date" class="filter-select" id="rpt-date-to" style="width:140px">
+          </div>
+        </div>
+        <div class="rpt-filter-group">
+          <label class="rpt-filter-label">Property</label>
+          <select class="filter-select"><option>Colombo City Hotel</option></select>
+        </div>
+        <div class="rpt-filter-group">
+          <label class="rpt-filter-label">Room type</label>
+          <select class="filter-select" id="rpt-room-type"><option value="all">All</option><option>Standard</option><option>Deluxe</option><option>Suite</option></select>
+        </div>
+      </div>
+
+      <!-- KPI metrics -->
+      <div class="rpt-kpi-row">
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-label">Occupancy</div>
+          <div class="rpt-kpi-value">—%</div>
+          <div class="rpt-kpi-sub" style="color:#16a34a">Connect DB</div>
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-label">ADR (Average daily rate)</div>
+          <div class="rpt-kpi-value">Rs. —</div>
+          <div class="rpt-kpi-sub" style="color:#16a34a">avg/night</div>
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-label">RevPAR</div>
+          <div class="rpt-kpi-value">Rs. —</div>
+          <div class="rpt-kpi-sub" style="color:#16a34a">per available room</div>
+        </div>
+        <div class="rpt-kpi-card">
+          <div class="rpt-kpi-label">Room revenue</div>
+          <div class="rpt-kpi-value">Rs. —</div>
+          <div class="rpt-kpi-sub" style="color:#16a34a">this period</div>
+        </div>
+      </div>
+
+      <!-- Occupancy by night chart -->
+      <div class="table-card" style="padding:20px">
+        <div class="tph" style="margin-bottom:16px">
+          <div class="tph-title" style="font-size:14px">Occupancy by night</div>
+          <div class="tph-sub" style="font-size:11px;color:#9ca3af">Weekend dates — Oct 19–21 1st choice</div>
+        </div>
+        <div class="rpt-chart-wrap"><canvas id="occupancy-chart" height="200"></canvas></div>
+        <div class="rpt-chart-empty" id="occ-chart-empty">
+          <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <p>Chart will populate once database is connected.<br>API: <code>GET /api/hotel/reports/occupancy?from=&to=</code></p>
+        </div>
+      </div>
+
+      <!-- By room type table -->
+      <div class="table-card">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+          <div class="tph-title" style="font-size:14px">By room type</div>
+        </div>
+        <div class="table-wrap">
+          <table class="rpt-table">
+            <thead class="rpt-head">
+              <tr><th>Room type</th><th>Rooms</th><th>Available nights</th><th>DIM</th><th>Occupancy %</th><th>ADR</th><th>Revenue</th></tr>
+            </thead>
+            <tbody id="rpt-tbody">
+              <tr><td colspan="7" class="table-empty-row"><div class="table-empty">
+                <svg width="36" height="36" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <p>Report data loads once database is connected.</p>
+              </div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ DASHBOARD PAGE (Figma E5) ══════════ -->
+  <div class="section-page" id="page-dashboard">
+    <div class="db-wrap">
+
+      <!-- Greeting Row -->
+      <div class="db-greeting-row">
+        <div>
+          <div class="db-greeting" id="db-greeting">Good afternoon, Dilani</div>
+          <div class="db-greeting-date" id="db-greeting-date">Loading...</div>
+        </div>
+        <div class="db-top-right">
+          <div class="db-branch-pills">
+            <button class="db-bp active">All branches</button>
+            <button class="db-bp">Colombo City Hotel</button>
+            <button class="db-bp">Kandy Hill Café</button>
+            <button class="db-bp">Galle Road Mart</button>
+          </div>
+          <div class="db-date-pills">
+            <button class="db-dp active" data-days="today">Today</button>
+            <button class="db-dp" data-days="7">7 days</button>
+            <button class="db-dp" data-days="30">30 days</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="db-kpi-row">
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Today's sales</div>
+          <div class="db-kpi-value">Rs. —</div>
+          <div class="db-kpi-trend db-trend-up">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            — vs last 7d
+          </div>
+        </div>
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Transactions</div>
+          <div class="db-kpi-value">—</div>
+          <div class="db-kpi-trend db-trend-down">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            — vs last 7d
+          </div>
+        </div>
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Average bill</div>
+          <div class="db-kpi-value">Rs. —</div>
+          <div class="db-kpi-trend db-trend-up">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            — vs last 7d
+          </div>
+        </div>
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Room occupancy</div>
+          <div class="db-kpi-value">—%</div>
+          <div class="db-kpi-sub">— of — rooms</div>
+        </div>
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Open tables</div>
+          <div class="db-kpi-value">— <span style="font-size:13px;font-weight:500;color:#6b7280">of —</span></div>
+          <div class="db-kpi-sub">— guests seated</div>
+        </div>
+        <div class="db-kpi-card">
+          <div class="db-kpi-label">Pending KOTs</div>
+          <div class="db-kpi-value">—</div>
+          <div class="db-kpi-sub" style="color:#ef4444">— delayed</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="db-charts-row">
+        <!-- Sales - last 7 days -->
+        <div class="db-chart-card db-chart-main">
+          <div class="db-chart-header">
+            <div>
+              <div class="db-chart-title">Sales — last 7 days</div>
+            </div>
+            <div class="db-chart-legend">
+              <span class="db-leg-dot" style="background:#ffd600"></span>All branches
+            </div>
+          </div>
+          <div style="position:relative;height:180px">
+            <canvas id="db-sales-chart"></canvas>
+          </div>
+        </div>
+        <!-- Sales by branch - today -->
+        <div class="db-chart-card db-chart-branch">
+          <div class="db-chart-header">
+            <div class="db-chart-title">Sales by branch — today</div>
+          </div>
+          <div style="position:relative;height:180px">
+            <canvas id="db-branch-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom 3 columns -->
+      <div class="db-bottom-row">
+
+        <!-- Top selling items -->
+        <div class="db-bottom-card">
+          <div class="db-section-header">
+            <span class="db-section-title">Top-selling items</span>
+          </div>
+          <div class="db-list" id="db-top-selling">
+            <div class="db-list-empty">
+              <svg width="32" height="32" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+              <p>Sales data loads<br>when DB is connected</p>
+              <code>GET /api/reports/top-selling</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Low-stock alerts -->
+        <div class="db-bottom-card">
+          <div class="db-section-header">
+            <span class="db-section-title">Low-stock alerts</span>
+            <span class="db-alert-badge" id="db-stock-count">0</span>
+          </div>
+          <div class="db-list" id="db-low-stock">
+            <div class="db-list-empty">
+              <svg width="32" height="32" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/></svg>
+              <p>Inventory alerts load<br>when DB is connected</p>
+              <code>GET /api/inventory/low-stock</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Staff performance -->
+        <div class="db-bottom-card">
+          <div class="db-section-header">
+            <span class="db-section-title">Staff performance — today</span>
+          </div>
+          <div class="db-staff-table-wrap">
+            <table class="db-staff-table">
+              <thead><tr><th>Staff</th><th>Sales</th><th>Time</th><th>Discounts</th></tr></thead>
+              <tbody id="db-staff-tbody">
+                <tr><td colspan="4">
+                  <div class="db-list-empty" style="padding:24px 0">
+                    <svg width="28" height="28" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    <p style="font-size:11px">Staff data loads when DB connected</p>
+                  </div>
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /db-bottom-row -->
+
+    </div><!-- /db-wrap -->
+  </div>
+  <div class="section-page placeholder-page" id="page-pos"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg><h3>POS / Sell</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-tables"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><h3>Tables &amp; Orders</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-kitchen"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/></svg><h3>Kitchen Display</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-inventory"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8"/></svg><h3>Inventory</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-customers"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><h3>Customers &amp; Loyalty</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-payments"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg><h3>Payments &amp; Shifts</h3><p>Owned by another team member</p></div></div>
+  <div class="section-page placeholder-page" id="page-settings"><div class="placeholder-content"><svg width="56" height="56" fill="none" stroke="#d1d5db" stroke-width="1.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg><h3>Settings</h3><p>Owned by another team member</p></div></div>
+
+</main>
+</div>
+
+<!-- ══════════════════════ MODALS ══════════════════════ -->
+
+<!-- Add Room -->
+<div class="modal-overlay" id="modal-add-room">
+  <div class="modal">
+    <div class="modal-header"><h2 class="modal-title">Add New Room</h2><button class="btn-icon-close modal-close" aria-label="Close">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Room Number *</label><input type="text" class="form-control" id="ar-no" placeholder="e.g. 312"></div>
+        <div class="form-group"><label class="form-label">Floor *</label><input type="number" class="form-control" id="ar-floor" min="1" max="20" placeholder="3"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Room Type *</label><select class="form-control" id="ar-type"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div>
+        <div class="form-group"><label class="form-label">Bed Type</label><select class="form-control"><option>King bed</option><option>Twin bed</option><option>Single bed</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">View</label><select class="form-control"><option>Sea view</option><option>Garden view</option><option>City view</option><option>No view</option></select></div>
+        <div class="form-group"><label class="form-label">Rate / Night (Rs.) *</label><input type="number" class="form-control" id="ar-rate" placeholder="25000"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Amenities</label><input type="text" class="form-control" placeholder="WiFi, Mini-bar, Jacuzzi…"></div>
+      <div class="api-note"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Calls <code>POST /api/hotel/rooms</code> when database is connected.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-action btn-secondary-action modal-close"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Cancel</button>
+      <button class="btn-action btn-primary-action" id="btn-submit-room"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Add Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Reservation -->
+<div class="modal-overlay" id="modal-new-res">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h2 class="modal-title">New Reservation</h2><button class="btn-icon-close modal-close" aria-label="Close">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Check-in Date *</label><input type="date" class="form-control" id="nr-checkin"></div>
+        <div class="form-group"><label class="form-label">Check-out Date *</label><input type="date" class="form-control" id="nr-checkout"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Adults *</label><input type="number" class="form-control" id="nr-adults" value="1" min="1"></div>
+        <div class="form-group"><label class="form-label">Children</label><input type="number" class="form-control" id="nr-children" value="0" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Booking Source *</label><select class="form-control" id="nr-source"><option>WALK_IN</option><option>PHONE</option><option>ONLINE</option></select></div>
+        <div class="form-group"><label class="form-label">Room *</label><select class="form-control" id="nr-room"><option value="">— loads from API —</option></select></div>
+      </div>
+      <div class="rate-preview" id="nr-rate-preview" style="display:none">
+        <div class="rate-row"><span style="font-size:12px;color:#6b7280">Estimated stay cost</span><span id="nr-rate-val" style="font-weight:800;color:#111118">Rs. —</span></div>
+      </div>
+      <div class="form-divider"></div>
+      <div class="form-section-label">Guest Details</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">NIC / Passport No. *</label><input type="text" class="form-control" id="nr-nic" placeholder="e.g. 199812345678"></div>
+        <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-control" id="nr-gname" placeholder="Guest full name"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nationality</label><input type="text" class="form-control" id="nr-nation" placeholder="e.g. Sri Lankan"></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="text" class="form-control" id="nr-phone" placeholder="+94 77 000 0000"></div>
+      </div>
+      <div class="api-note"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Calls <code>POST /api/hotel/reservations</code>. Room list from <code>GET /api/hotel/rooms/available</code>.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-action btn-secondary-action modal-close"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Cancel</button>
+      <button class="btn-action btn-primary-action btn-lg-action" id="btn-submit-res"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Create Reservation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Guest -->
+<div class="modal-overlay" id="modal-add-guest">
+  <div class="modal">
+    <div class="modal-header"><h2 class="modal-title">Add Guest Profile</h2><button class="btn-icon-close modal-close" aria-label="Close">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-control" id="ag-name" placeholder="Guest full name"></div>
+        <div class="form-group"><label class="form-label">NIC / Passport *</label><input type="text" class="form-control" id="ag-nic" placeholder="e.g. 199812345678"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nationality</label><input type="text" class="form-control" id="ag-nation" placeholder="Sri Lankan"></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="text" class="form-control" id="ag-phone" placeholder="+94 77 000 0000"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-control" id="ag-email" placeholder="guest@email.com"></div>
+      <div class="api-note"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Calls <code>POST /api/hotel/guests</code> when database is connected.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-action btn-secondary-action modal-close"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Cancel</button>
+      <button class="btn-action btn-primary-action" id="btn-submit-guest"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Save Guest</button>
+    </div>
+  </div>
+</div>
+
+<!-- Success / Toast notification -->
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Test profile — datasource is supplied by Testcontainers via @DynamicPropertySource.
+# Flyway is disabled here because Testcontainers runs its own migration inside the container.
+spring:
+  datasource:
+    url: ${TEST_DATASOURCE_URL:jdbc:tc:mysql:8.0:///bughunters_test}
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  flyway:
+    enabled: false    # Integration tests manage Flyway themselves via @DynamicPropertySource
+
+logging:
+  level:
+    com.bughunters.pos: DEBUG
